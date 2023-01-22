@@ -13,7 +13,7 @@ def sign(m):
 	#Your code here
 	r = 0
 	s = 0
-	r, s = ecdsa.sign(m, private_key)
+	r, s = ecdsa.sign(m, public_key)
 
 	assert isinstance( public_key, point.Point )
 	assert isinstance( r, int )
