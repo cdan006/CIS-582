@@ -26,6 +26,9 @@ def encrypt(pk, m):
 
     return [c1, c2]
 
+def decrypt(sk, c):
+    return sk
+
 """
 def decrypt(sk, c):
     c1, c2 = c
