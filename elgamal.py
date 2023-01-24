@@ -22,7 +22,8 @@ def encrypt(pk, m):
     c2 = 0
     r = random.randint(1,q)
     c1 = pow(g,r,p)
-    c2 = (pow(pk,r)*m)%p
+    step = pow(pk,r,p)
+    c2 = (step*m)%p
 
     return [c1, c2]
 
