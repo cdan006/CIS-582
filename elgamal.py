@@ -28,10 +28,6 @@ def encrypt(pk, m):
     return [c1, c2]
 
 def decrypt(sk, c):
-    return sk
-
-"""
-def decrypt(sk, c):
     c1, c2 = c
     a = pow(c1, sk,p)
     x = modinv(a,p)
@@ -52,4 +48,3 @@ def egcd(a, b):
     else:
         g, y, x = egcd(b % a, a)
         return (g, x - (b // a) * y, y)
-"""
