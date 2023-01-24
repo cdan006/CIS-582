@@ -29,16 +29,22 @@ def encrypt(pk, m):
 
 def decrypt(sk, c):
     c1, c2 = c
-    a = pow(c1, sk)
-    #a = pow(c1,sk,p)
-    x = pow(a,-1,p)
+    a = pow(c1, sk,p)
+    x = modinv(a,p)
     m = (c2 * x)%p
-
-
-    #power = p - 1 - sk
-    #d = pow(c1,power,p)
-    #m = (c2 * pow(d,-1, p)) % p
-
-    #m = (c1/pow(c2,sk))%p
-
     return m
+
+
+def modinv(a, m):
+    g, x, y = egcd(a, m)
+    if g != 1 and g != -1:
+        raise Exception('No inverse')
+    else:
+        return x % m
+
+def egcd(a, b):
+    if a == 0:
+        return (b, 0, 1)
+    else:
+        g, y, x = egcd(b % a, a)
+        return (g, x - (b // a) * y, y)
