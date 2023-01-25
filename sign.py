@@ -8,7 +8,7 @@ from hashlib import sha256
 def sign(m):
 	#generate public key
 	#Your code here
-	private_key = ecdsa.keys.get_private_key(curve = curve.secp256k1)
+	private_key = ecdsa.keys.gen_private_key(curve = curve.secp256k1)
 	public_key = ecdsa.keys.get_public_key(private_key, curve = curve.secp256k1)
 	r = 0
 	s = 0
