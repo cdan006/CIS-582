@@ -4,20 +4,20 @@ from fastecdsa.keys import export_key, gen_keypair
 from fastecdsa import curve, ecdsa, keys, point
 from hashlib import sha256
 
+#use the sign and verify functions in https://fastecdsa.readthedocs.io/en/stable/fastecdsa.html
 def sign(m):
 	#generate public key
 	#Your code here
-	private_key = keys.gen_private_key(curve.P256)
-	public_key = keys.get_public_key(private_key, curve.P256)
-	#generate signature
-	#Your code here
+	#private_key = ecdsa.get_private_key(curve = curve.secp256k1)
+	#public_key = ecdsa.get_public_key(private_key, curve = curve.secp256k1)
+	private_key, public_key = gen_keypair(curve=secp256k1)
 	r = 0
 	s = 0
-	r, s = ecdsa.sign(m, private_key)
+
+	#r,s = fastecdsa.ecdsa.sign(m,private_key, curve = curve.secp256k1)
+	r,s = ecdsa.sign(m, private_key, curve = secp256k1)
 
 	assert isinstance( public_key, point.Point )
 	assert isinstance( r, int )
 	assert isinstance( s, int )
 	return( public_key, [r,s] )
-
-
