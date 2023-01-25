@@ -8,8 +8,8 @@ from hashlib import sha256
 def sign(m):
 	#generate public key
 	#Your code here
-	private_key = keys.get_private_key(curve = curve.secp256k1)
-	public_key = keys.get_public_key(private_key, curve = curve.secp256k1)
+	private_key = get_private_key(curve = curve.secp256k1)
+	public_key = get_public_key(private_key, curve = curve.secp256k1)
 	r = 0
 	s = 0
 
