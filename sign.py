@@ -1,7 +1,11 @@
 #from fastecdsa.curve import secp256k1
 #from fastecdsa.keys import export_key, gen_keypair
 
-from fastecdsa import curve, ecdsa, keys, point
+#from fastecdsa import curve, ecdsa, keys, point
+from fastecdsa import curve
+from fastecdsa import ecdsa
+from fastecdsa import keys
+from fastecdsa import point
 from hashlib import sha256
 
 #use the sign and verify functions in https://fastecdsa.readthedocs.io/en/stable/fastecdsa.html
