@@ -13,7 +13,7 @@ def sign(m):
 	r = 0
 	s = 0
 
-	r,s = fastecdsa.ecdsa.sign(m,private_key, curve = curve.secp256k1)
+	r,s = ecdsa.sign(m,private_key, curve = curve.secp256k1)
 
 	assert isinstance( public_key, point.Point )
 	assert isinstance( r, int )
