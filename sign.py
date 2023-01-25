@@ -8,12 +8,14 @@ from hashlib import sha256
 def sign(m):
 	#generate public key
 	#Your code here
-	private_key = ecdsa.keys.get_private_key(curve = curve.secp256k1)
-	public_key = ecdsa.keys.get_public_key(private_key, curve = curve.secp256k1)
+	#private_key = ecdsa.get_private_key(curve = curve.secp256k1)
+	#public_key = ecdsa.get_public_key(private_key, curve = curve.secp256k1)
+	private_key, public_key = gen_keypair(curve=secp256k1)
 	r = 0
 	s = 0
 
-	r,s = ecdsa.sign(m,private_key, curve = curve.secp256k1)
+	#r,s = fastecdsa.ecdsa.sign(m,private_key, curve = curve.secp256k1)
+	r,s = ecdsa.sign(m, private_key, hashfunc=sha256)
 
 	assert isinstance( public_key, point.Point )
 	assert isinstance( r, int )
