@@ -35,7 +35,7 @@ def next_block(last_block):
     next_block_index = last_block.index + 1
     next_block_index_string = str(next_block_index)
     content = "this is block " + next_block_index_string
-    next_block_created = Block(next_block_index, datetime.now(), content, last_block.previous_hash)
+    next_block_created = Block(next_block_index, datetime.now(), content, last_block.hash)
     return next_block_created
 
 
