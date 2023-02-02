@@ -10,14 +10,15 @@ def pin_to_ipfs(data):
     'file': json.dumps(data)
     }
     cid = requests.post(endpoint+"add", files=files, auth=('2L9vlTevJDocIJl8kg0wtVXJTC7','ad15ab9acc005b3533f99262f04a6654'))
-    return cid.text
+    cid = cid.json()['hash']
+    return cid
 
 
 def get_from_ipfs(cid, content_type="json"):
     assert isinstance(cid, str), f"get_from_ipfs accepts a cid in the form of a string"
-    params = (
-        ('arg', cid),
-    )
+    params = {
+        'arg': cid
+    }
     data = requests.post(endpoint+"cat", params=params,auth=('2L9vlTevJDocIJl8kg0wtVXJTC7', 'ad15ab9acc005b3533f99262f04a6654'))
 
     assert isinstance(data, dict), f"get_from_ipfs should return a dict"
