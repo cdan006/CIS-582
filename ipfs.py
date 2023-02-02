@@ -10,7 +10,7 @@ def pin_to_ipfs(data):
     'file': json.dumps(data)
     }
     cid = requests.post(endpoint+"add", files=files, auth=('2L9vlTevJDocIJl8kg0wtVXJTC7','ad15ab9acc005b3533f99262f04a6654'))
-    cid = cid.json()['hash']
+    cid = cid.json()['Hash']
     return cid
 
 
