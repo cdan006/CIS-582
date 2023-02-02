@@ -19,8 +19,9 @@ def get_from_ipfs(cid, content_type="json"):
     params = {
         'arg': cid
     }
-    data = requests.post(endpoint+"cat", params=params,auth=('2L9vlTevJDocIJl8kg0wtVXJTC7', 'ad15ab9acc005b3533f99262f04a6654'))
 
+    data = requests.post(endpoint+"cat", params=params, auth=('2L9vlTevJDocIJl8kg0wtVXJTC7', 'ad15ab9acc005b3533f99262f04a6654'))
+    data = json.loads(data.text)
     assert isinstance(data, dict), f"get_from_ipfs should return a dict"
     return data
 """
