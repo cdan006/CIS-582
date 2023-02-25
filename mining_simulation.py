@@ -16,7 +16,7 @@ def Simulate(alpha, gamma, N, seed):
     SelfishRevenue = 0
 
     PoolHiddenChain= 0
-
+    print(alpha, gamma, N, seed)
     # A round begin when the state=0
     for i in range(N):
         r = random.random()
