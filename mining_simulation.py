@@ -27,12 +27,14 @@ def Simulate(alpha, gamma, N, seed):
                 # They don't publish it.
                 state += 1
                 PoolHiddenChain += 1
+                # made it here
             else:
                 # The honest miners found a block.
                 # The round is finished : the honest miners found 1 block
                 # and the selfish miners found 0 block.
                 state = 0
                 ChainLength+=1 #maybe add this
+                #made it here
 
         elif state == 1:
             # The selfish pool has 1 hidden block.
@@ -46,6 +48,7 @@ def Simulate(alpha, gamma, N, seed):
                 state = -1
                 PoolHiddenChain -= 1
                 ChainLength +=1
+                # made it here
 
         # Write a piece of code to change the required variables.
 
@@ -57,9 +60,11 @@ def Simulate(alpha, gamma, N, seed):
                 state = 0
                 SelfishRevenue += 2
                 ChainLength+=1
+                # made it here
             elif r <= alpha + (1 - alpha) * gamma:
                 state = 0
                 SelfishRevenue += 1
+                ChainLength += 1 #maybe add this
             else:
                 state = 0
                 ChainLength += 1  # maybe add this
