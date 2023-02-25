@@ -26,8 +26,8 @@ def Simulate(alpha, gamma, N, seed):
             if r <= alpha:
                 # The selfish pool mines a block.
                 # They don't publish it.
-                state = 1
-                PoolHiddenChain = 1
+                state += 1
+                PoolHiddenChain += 1
             else:
                 # The honest miners found a block.
                 # The round is finished : the honest miners found 1 block
@@ -39,12 +39,12 @@ def Simulate(alpha, gamma, N, seed):
             if r <= alpha:
             #The selfish miners found a new block.
             # Write a piece of code to change the required variables.
-                state = 2
-                PoolHiddenChain = 2
+                state += 1
+                PoolHiddenChain += 1
             # You might need to define new variable to keep track of the number of hidden blocks.
             else:
                 state = -1
-                PoolHiddenChain = 0
+                PoolHiddenChain -= 1
                 ChainLength +=1
 
         # Write a piece of code to change the required variables.
@@ -55,26 +55,22 @@ def Simulate(alpha, gamma, N, seed):
             # Write a piece of code to change the required variables in each one.
             if r <= alpha:
                 state = 0
-                SelfishRevenue = 2
-                ChainLength+=2
+                SelfishRevenue += 2
             elif r <= alpha + (1 - alpha) * gamma:
                 state = 0
-                SelfishRevenue = 1
-                ChainLength = 1
+                SelfishRevenue += 1
             else:
-                SelfishRevenue = 0
                 state = 0
-
 
         elif state == 2:
             # The selfish pool has 2 hidden block.
             if r <= alpha:
-                state = 3
-                PoolHiddenChain=3
+                state += 1
+                PoolHiddenChain+=1
             else:
                 state = 0
-                SelfishRevenue = 2
-                ChainLength = 2
+                SelfishRevenue += 2
+                ChainLength += 2
                 PoolHiddenChain-=2
         # The honest miners found a block.
 
@@ -86,7 +82,7 @@ def Simulate(alpha, gamma, N, seed):
             else:
                 state -= 1
                 SelfishRevenue += 1
-                PoolHiddenChain += 1
+                PoolHiddenChain -= 1
                 ChainLength+=1
                 #publish enough to stay ahead by 1
 
