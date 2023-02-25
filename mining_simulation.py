@@ -16,7 +16,6 @@ def Simulate(alpha, gamma, N, seed):
     SelfishRevenue = 0
 
     PoolHiddenChain= 0
-    print(alpha, gamma, N, seed)
     # A round begin when the state=0
     for i in range(N):
         r = random.random()
@@ -33,6 +32,7 @@ def Simulate(alpha, gamma, N, seed):
                 # The round is finished : the honest miners found 1 block
                 # and the selfish miners found 0 block.
                 state = 0
+                ChainLength+=1 #maybe add this
 
         elif state == 1:
             # The selfish pool has 1 hidden block.
@@ -56,11 +56,13 @@ def Simulate(alpha, gamma, N, seed):
             if r <= alpha:
                 state = 0
                 SelfishRevenue += 2
+                ChainLength+=1
             elif r <= alpha + (1 - alpha) * gamma:
                 state = 0
                 SelfishRevenue += 1
             else:
                 state = 0
+                ChainLength += 1  # maybe add this
 
         elif state == 2:
             # The selfish pool has 2 hidden block.
@@ -89,18 +91,3 @@ def Simulate(alpha, gamma, N, seed):
     return float(SelfishRevenue) / ChainLength
 
 
-""" 
-  Uncomment out the following lines to try out your code
-  DON'T include it in your final submission though.
-"""
-
-"""
-#let's run the code with the follwing parameters!
-alpha=0.35
-gamma=0.5
-Nsimu=10**7
-seed = 100
-#This is the theoretical probability computed in the original paper
-print("Theoretical probability :",(alpha*(1-alpha)**2*(4*alpha+gamma*(1-2*alpha))-alpha**3)/(1-alpha*(1+(2-alpha)*alpha)))
-print("Simulated probability :",Simulate(alpha,gamma,Nsimu, seed))
-"""
