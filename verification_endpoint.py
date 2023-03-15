@@ -10,15 +10,20 @@ app.url_map.strict_slashes = False
 
 @app.route('/verify', methods=['GET','POST'])
 def verify():
-    #content = request.get_json(silent=True)
+    content = request.get_json(silent=True)
 
     #Check if signature is valid
 
-    payload = request.json['payload']
+    #payload = request.json['payload']
+    payload = content['payload']
     platform = payload['platform']
     pk = payload['pk']
     message = payload['message']
-    sig = request.json['sig']
+    sig = content['sig']
+    #sig = request.json['sig']
+
+
+
     result = False
     if platform.lower() == 'ethereum':
         eth_encoded_msg = eth_account.messages.encode_defunct(text=json.dumps(payload))
