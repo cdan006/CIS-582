@@ -14,13 +14,10 @@ def verify():
 
     #Check if signature is valid
 
-    #payload = request.json['payload']
     payload = content['payload']
     platform = payload['platform']
     pk = payload['pk']
-    message = payload['message']
     sig = content['sig']
-    #sig = request.json['sig']
 
 
 
