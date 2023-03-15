@@ -18,18 +18,19 @@ def verify():
     platform = payload['platform']
     pk = payload['pk']
     sig = content['sig']
+    payload_dumps = json.dumps(payload)
 
 
 
     result = False
     if platform.lower() == 'ethereum':
-        eth_encoded_msg = eth_account.messages.encode_defunct(text=json.dumps(payload))
+        eth_encoded_msg = eth_account.messages.encode_defunct(text=payload_dumps)
         if eth_account.Account.recover_message(eth_encoded_msg, signature=sig) == pk:
             result= jsonify(True)
         else:
             result= jsonify(False)
     elif platform.lower() == 'algorand':
-        if algosdk.util.verify_bytes(json.dumps(payload).encode('utf-8'), sig, pk):
+        if algosdk.util.verify_bytes(payload_dumps.encode('utf-8'), sig, pk):
             result= jsonify(True)
         else:
             result= jsonify(False)
