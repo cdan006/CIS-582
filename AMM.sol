@@ -58,19 +58,17 @@ contract AMM is AccessControl{
 
 		//YOUR CODE HERE
 		if (sellToken == tokenA) {
-		    qtyA = (ERC20(tokenA).balanceOf(address(this))) + (10000 - feebps) * sellAmount / 10 ** 4;
-		    qtyB = invariant / qtyA;
-		    swapAmt = (ERC20(tokenB).balanceOf(address(this)) - qtyB);
-
-
+		    qtyA = (ERC20(tokenA).balanceOf(address(this))) + sellAmount;
+		    qtyB = (ERC20(tokenB).balanceOf(address(this)))/(qtyA / (ERC20(tokenB).balanceOf(address(this))));
+		    swapAmt = qtyB*(10000 - feebps);
 			ERC20(tokenA).transferFrom(msg.sender, address(this), sellAmount);
 			ERC20(tokenB).transfer(msg.sender, swapAmt);
 		}
 
 		if (sellToken == tokenB){
-		    qtyB = (ERC20(tokenB).balanceOf(address(this))) + (10000 - feebps) * sellAmount / 10 ** 4;
-		    qtyA = invariant / qtyB;
-		    swapAmt = (ERC20(tokenA).balanceOf(address(this)) - qtyA);
+		    qtyB = (ERC20(tokenB).balanceOf(address(this))) + sellAmount;
+		    qtyA = (ERC20(tokenA).balanceOf(address(this)))/(qtyB / (ERC20(tokenA).balanceOf(address(this))));
+		    swapAmt = qtyA*(10000 - feebps);
 			ERC20(tokenB).transferFrom(msg.sender, address(this), sellAmount);
 			ERC20(tokenA).transfer(msg.sender, swapAmt);
 		}
