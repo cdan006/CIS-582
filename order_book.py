@@ -31,7 +31,7 @@ def process_order(order):
         if new_order.filled or o.filled:
             continue
 
-        time = datetime.datetime.now()
+        time = datetime.now()
         new_order.filled = time
         o.filled = time
 
