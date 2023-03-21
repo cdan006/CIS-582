@@ -64,7 +64,7 @@ def process_order(order):
                                     sender_pk=child_order['sender_pk'],
                                     receiver_pk=child_order['receiver_pk']
                                     )
-            process_order(child_order_obj)
+            process_order(child_order)
 
         elif new_order.buy_amount > existing_order.sell_amount:
             exchange = existing_order.sell_amount / existing_order.buy_amount
@@ -87,5 +87,5 @@ def process_order(order):
                                     sender_pk=child_order['sender_pk'],
                                     receiver_pk=child_order['receiver_pk']
                                     )
-            process_order(child_order_obj)
+            process_order(child_order)
             break
