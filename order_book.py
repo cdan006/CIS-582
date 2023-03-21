@@ -27,22 +27,22 @@ def process_order(order):
         ((Order.sell_amount / Order.buy_amount) >= (new_order.buy_amount / new_order.sell_amount))
     ).all()
 
-    for o in orders_iterate:
-        if new_order.filled or o.filled:
+    for existing_order in orders_iterate:
+        if existing_order.filled is not None or new_order.filled is not None:
             continue
 
         time = datetime.now()
         new_order.filled = time
-        o.filled = time
+        existing_order.filled = time
 
-        new_order.counterparty_id = o.id
-        o.counterparty_id = new_order.id
+        new_order.counterparty_id = existing_order.id
+        existing_order.counterparty_id = new_order.id
 
         session.commit()
 
-        if new_order.sell_amount > o.buy_amount:
+        if new_order.sell_amount > existing_order.buy_amount:
             i_exchange = new_order.sell_amount / new_order.buy_amount
-            left_over_sell_amount = new_order.sell_amount - o.buy_amount
+            left_over_sell_amount = new_order.sell_amount - existing_order.buy_amount
             left_over_buy_amount = left_over_sell_amount / i_exchange
 
             child_order = {
@@ -55,5 +55,21 @@ def process_order(order):
             }
 
             process_order(child_order)
+        elif new_order.buy_amount < existing_order.sell_amount:
+            i_exchange = existing_order.sell_amount / existing_order.buy_amount
+            left_over_sell_amount = existing_order.sell_amount - new_order.buy_amount
+            left_over_buy_amount = left_over_sell_amount / i_exchange
+
+            child_order = {
+                'buy_currency': existing_order.buy_currency,
+                'sell_currency': existing_order.sell_currency,
+                'buy_amount': left_over_buy_amount,
+                'sell_amount': left_over_sell_amount,
+                'sender_pk': existing_order.sender_pk,
+                'receiver_pk': existing_order.receiver_pk
+            }
+
+            process_order(child_order)
+
 
             break
