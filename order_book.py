@@ -3,10 +3,12 @@ from sqlalchemy.orm import sessionmaker
 from datetime import datetime
 
 from models import Base, Order
+
 engine = create_engine('sqlite:///orders.db')
 Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
+
 
 def process_order(order):
     new_order = Order(
@@ -17,7 +19,7 @@ def process_order(order):
         sender_pk=order['sender_pk'],
         receiver_pk=order['receiver_pk']
     )
-    session.add(new_order)
+    session.add(order) #changed from new_order
     session.commit()
 
     orders_iterate = session.query(Order).filter(
@@ -33,11 +35,11 @@ def process_order(order):
             continue
 
         time = datetime.now()
-        new_order.filled = time
+        order.filled = time #changed from new_order
         existing_order.filled = time
 
-        new_order.counterparty_id = existing_order.id
-        existing_order.counterparty_id = new_order.id
+        order.counterparty_id = existing_order.id #changed from new_order
+        existing_order.counterparty_id = order.id #changed from new_order
 
         session.commit()
 
@@ -55,8 +57,16 @@ def process_order(order):
                 'receiver_pk': existing_order.receiver_pk,
                 'id': existing_order.id
             }
-            #child_order.creater_id = existing_order.id
-            process_order(child_order)
+            child_order_obj = Order(buy_currency=child_order['buy_currency'],
+                                    sell_currency=child_order['sell_currency'],
+                                    buy_amount=child_order['buy_amount'],
+                                    sell_amount=child_order['sell_amount'],
+                                    sender_pk=child_order['sender_pk'],
+                                    receiver_pk=child_order['receiver_pk']
+                                    )
+            session.add(child_order_obj)
+            session.commit()
+            #process_order(child_order_obj)
 
         elif new_order.buy_amount > existing_order.sell_amount:
             exchange = existing_order.sell_amount / existing_order.buy_amount
@@ -72,8 +82,15 @@ def process_order(order):
                 'receiver_pk': new_order.receiver_pk,
                 'id': new_order.id
             }
-            #child_order.creater_id = new_order.id
-            process_order(child_order)
-
-
+            # child_order.creater_id = new_order.id
+            child_order_obj = Order(buy_currency=child_order['buy_currency'],
+                                    sell_currency=child_order['sell_currency'],
+                                    buy_amount=child_order['buy_amount'],
+                                    sell_amount=child_order['sell_amount'],
+                                    sender_pk=child_order['sender_pk'],
+                                    receiver_pk=child_order['receiver_pk']
+                                    )
+            session.add(child_order_obj)
+            session.commit()
+            # process_order(child_order_obj)
             break
