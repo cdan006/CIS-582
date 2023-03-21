@@ -47,30 +47,32 @@ def process_order(order):
             left_over_sell_amount = left_over_buy_amount / exchange
 
             child_order = {
+                'buy_currency': existing_order.buy_currency,
+                'sell_currency': existing_order.sell_currency,
+                'buy_amount': left_over_buy_amount,
+                'sell_amount': left_over_sell_amount,
+                'sender_pk': existing_order.sender_pk,
+                'receiver_pk': existing_order.receiver_pk,
+                'id': existing_order.id
+            }
+            #child_order.creater_id = existing_order.id
+            process_order(child_order)
+
+        elif new_order.buy_amount > existing_order.sell_amount:
+            exchange = existing_order.sell_amount / existing_order.buy_amount
+            left_over_buy_amount = new_order.buy_amount - existing_order.sell_amount
+            left_over_sell_amount = left_over_buy_amount / exchange
+
+            child_order = {
                 'buy_currency': new_order.buy_currency,
                 'sell_currency': new_order.sell_currency,
                 'buy_amount': left_over_buy_amount,
                 'sell_amount': left_over_sell_amount,
                 'sender_pk': new_order.sender_pk,
                 'receiver_pk': new_order.receiver_pk,
+                'id': new_order.id
             }
-            child_order.creater_id = existing_order.id
-            process_order(child_order)
-
-        elif new_order.buy_amount > existing_order.sell_amount:
-            exchange = existing_order.sell_amount / existing_order.buy_amount
-            left_over_buy_amount = new_order.buy_amount - existing_order.sell_amount
-            left_over_sell_amount = left_over_sell_amount / exchange
-
-            child_order = {
-                'buy_currency': existing_order.buy_currency,
-                'sell_currency': existing_order.sell_currency,
-                'buy_amount': left_over_buy_amount,
-                'sell_amount': left_over_sell_amount,
-                'sender_pk': existing_order.sender_pk,
-                'receiver_pk': existing_order.receiver_pk
-            }
-            child_order.creater_id = new_order.id
+            #child_order.creater_id = new_order.id
             process_order(child_order)
 
 
