@@ -43,8 +43,8 @@ def process_order(order):
 
         if new_order.sell_amount < existing_order.buy_amount:
             exchange = new_order.sell_amount / new_order.buy_amount
-            left_over_sell_amount = new_order.sell_amount - existing_order.buy_amount
-            left_over_buy_amount = left_over_sell_amount / exchange
+            left_over_buy_amount = existing_order.buy_amount - new_order.sell_amount
+            left_over_sell_amount = left_over_buy_amount / exchange
 
             child_order = {
                 'buy_currency': new_order.buy_currency,
@@ -52,14 +52,15 @@ def process_order(order):
                 'buy_amount': left_over_buy_amount,
                 'sell_amount': left_over_sell_amount,
                 'sender_pk': new_order.sender_pk,
-                'receiver_pk': new_order.receiver_pk
+                'receiver_pk': new_order.receiver_pk,
             }
-
+            child_order.creater_id = existing_order.id
             process_order(child_order)
+
         elif new_order.buy_amount > existing_order.sell_amount:
             exchange = existing_order.sell_amount / existing_order.buy_amount
-            left_over_sell_amount = existing_order.sell_amount - new_order.buy_amount
-            left_over_buy_amount = left_over_sell_amount / exchange
+            left_over_buy_amount = new_order.buy_amount - existing_order.sell_amount
+            left_over_sell_amount = left_over_sell_amount / exchange
 
             child_order = {
                 'buy_currency': existing_order.buy_currency,
@@ -69,7 +70,7 @@ def process_order(order):
                 'sender_pk': existing_order.sender_pk,
                 'receiver_pk': existing_order.receiver_pk
             }
-
+            child_order.creater_id = new_order.id
             process_order(child_order)
 
 
