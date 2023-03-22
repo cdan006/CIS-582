@@ -11,14 +11,25 @@ session = DBSession()
 
 
 def process_order(order):
-    new_order = Order(
-        buy_currency=order['buy_currency'],
-        sell_currency=order['sell_currency'],
-        buy_amount=order['buy_amount'],
-        sell_amount=order['sell_amount'],
-        sender_pk=order['sender_pk'],
-        receiver_pk=order['receiver_pk']
-    )
+    if 'creater_id' in order:
+        new_order = Order(
+            buy_currency=order['buy_currency'],
+            sell_currency=order['sell_currency'],
+            buy_amount=order['buy_amount'],
+            sell_amount=order['sell_amount'],
+            sender_pk=order['sender_pk'],
+            receiver_pk=order['receiver_pk'],
+            creater_id= order['receiver_pk']
+        )
+    else:
+        new_order = Order(
+            buy_currency=order['buy_currency'],
+            sell_currency=order['sell_currency'],
+            buy_amount=order['buy_amount'],
+            sell_amount=order['sell_amount'],
+            sender_pk=order['sender_pk'],
+            receiver_pk=order['receiver_pk']
+        )
     session.add(new_order)
     session.commit()
 
