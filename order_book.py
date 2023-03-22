@@ -21,15 +21,10 @@ def process_order(order):
         receiver_pk=order['receiver_pk']
     )
 
-    orders_existing = session.query(Order).filter(
-        Order.filled.is_(None),
-        Order.sell_currency == new_order.sell_currency,
-        Order.buy_currency == new_order.buy_currency,
-    ).all()
 
-    if new_order not in orders_existing:
-        session.add(new_order)
-        session.commit()
+    session.add(new_order)
+    session.commit()
+
     orders_iterate = session.query(Order).filter(
         Order.filled.is_(None),
         Order.buy_currency == new_order.sell_currency,
