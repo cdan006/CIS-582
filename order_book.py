@@ -11,28 +11,25 @@ session = DBSession()
 
 
 def process_order(order):
-    if 'creater_id' in order:
-        new_order = Order(
-            buy_currency=order['buy_currency'],
-            sell_currency=order['sell_currency'],
-            buy_amount=order['buy_amount'],
-            sell_amount=order['sell_amount'],
-            sender_pk=order['sender_pk'],
-            receiver_pk=order['receiver_pk'],
-            creater_id= order['receiver_pk']
-        )
-    else:
-        new_order = Order(
-            buy_currency=order['buy_currency'],
-            sell_currency=order['sell_currency'],
-            buy_amount=order['buy_amount'],
-            sell_amount=order['sell_amount'],
-            sender_pk=order['sender_pk'],
-            receiver_pk=order['receiver_pk']
-        )
-    session.add(new_order)
-    session.commit()
 
+    new_order = Order(
+        buy_currency=order['buy_currency'],
+        sell_currency=order['sell_currency'],
+        buy_amount=order['buy_amount'],
+        sell_amount=order['sell_amount'],
+        sender_pk=order['sender_pk'],
+        receiver_pk=order['receiver_pk']
+    )
+
+    orders_existing = session.query(Order).filter(
+        Order.filled.is_(None),
+        Order.sell_currency == new_order.sell_currency,
+        Order.buy_currency == new_order.buy_currency,
+    ).all()
+
+    if new_order not in orders_existing:
+        session.add(new_order)
+        session.commit()
     orders_iterate = session.query(Order).filter(
         Order.filled.is_(None),
         Order.buy_currency == new_order.sell_currency,
@@ -75,6 +72,8 @@ def process_order(order):
                                     sender_pk=child_order['sender_pk'],
                                     receiver_pk=child_order['receiver_pk']
                                     )
+            session.add(child_order)
+            session.commit()
             process_order(child_order)
 
         elif new_order.buy_amount > existing_order.sell_amount:
@@ -98,5 +97,7 @@ def process_order(order):
                                     sender_pk=child_order['sender_pk'],
                                     receiver_pk=child_order['receiver_pk']
                                     )
+            session.add(child_order)
+            session.commit()
             process_order(child_order)
             break
