@@ -19,7 +19,7 @@ def process_order(order):
         sender_pk=order['sender_pk'],
         receiver_pk=order['receiver_pk']
     )
-    session.add(new_order)
+    session.add(order)
     session.commit()
 
     orders_iterate = session.query(Order).filter(
