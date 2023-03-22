@@ -17,8 +17,7 @@ def process_order(order):
         buy_amount=order['buy_amount'],
         sell_amount=order['sell_amount'],
         sender_pk=order['sender_pk'],
-        receiver_pk=order['receiver_pk'],
-        creator_id=order['creator_id']
+        receiver_pk=order['receiver_pk']
     )
     session.add(new_order)
     session.commit()
