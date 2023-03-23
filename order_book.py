@@ -58,7 +58,7 @@ def process_order(order):
                 'sell_amount': left_over_sell_amount,
                 'sender_pk': existing_order.sender_pk,
                 'receiver_pk': existing_order.receiver_pk,
-                'creater_id': existing_order.id
+                'creator_id': existing_order.id
             }
             child_order_obj = Order(buy_currency=child_order['buy_currency'],
                                     sell_currency=child_order['sell_currency'],
@@ -66,7 +66,7 @@ def process_order(order):
                                     sell_amount=child_order['sell_amount'],
                                     sender_pk=child_order['sender_pk'],
                                     receiver_pk=child_order['receiver_pk'],
-                                    creater_id=child_order['creater_id']
+                                    creator_id=child_order['creator_id']
                                     )
 
             session.add(child_order_obj)
@@ -86,7 +86,7 @@ def process_order(order):
                 'sell_amount': left_over_sell_amount,
                 'sender_pk': new_order.sender_pk,
                 'receiver_pk': new_order.receiver_pk,
-                'creater_id': new_order.id
+                'creator_id': new_order.id
             }
             child_order_obj = Order(buy_currency=child_order['buy_currency'],
                                     sell_currency=child_order['sell_currency'],
@@ -94,7 +94,7 @@ def process_order(order):
                                     sell_amount=child_order['sell_amount'],
                                     sender_pk=child_order['sender_pk'],
                                     receiver_pk=child_order['receiver_pk'],
-                                    creater_id = child_order['creater_id']
+                                    creator_id = child_order['creator_id']
                                     )
             session.add(child_order_obj)
             session.commit()
