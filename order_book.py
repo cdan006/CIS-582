@@ -89,6 +89,7 @@ def process_order(order):
                 'sender_pk': new_order.sender_pk,
                 'receiver_pk': new_order.receiver_pk,
                 'creator_id': new_order.id
+
             }
             child_order_obj = Order(buy_currency=child_order['buy_currency'],
                                     sell_currency=child_order['sell_currency'],
