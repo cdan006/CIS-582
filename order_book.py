@@ -65,10 +65,11 @@ def process_order(order):
                                     buy_amount=child_order['buy_amount'],
                                     sell_amount=child_order['sell_amount'],
                                     sender_pk=child_order['sender_pk'],
-                                    receiver_pk=child_order['receiver_pk']
+                                    receiver_pk=child_order['receiver_pk'],
+                                    creater_id=child_order['creater_id']
                                     )
 
-            session.add(child_order)
+            session.add(child_order_obj)
             session.commit()
             #add this child order to the database
             #process_order(child_order)
@@ -92,9 +93,10 @@ def process_order(order):
                                     buy_amount=child_order['buy_amount'],
                                     sell_amount=child_order['sell_amount'],
                                     sender_pk=child_order['sender_pk'],
-                                    receiver_pk=child_order['receiver_pk']
+                                    receiver_pk=child_order['receiver_pk'],
+                                    creater_id = child_order['creater_id']
                                     )
-            session.add(child_order)
+            session.add(child_order_obj)
             session.commit()
             #process_order(child_order)
             break
