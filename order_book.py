@@ -47,9 +47,7 @@ def process_order(order):
         session.commit()
 
         if new_order.sell_amount < existing_order.buy_amount:
-            exchange = new_order.sell_amount / new_order.buy_amount
             left_over_buy_amount = existing_order.buy_amount - new_order.sell_amount
-            #left_over_sell_amount = left_over_buy_amount * exchange
             left_over_sell_amount = left_over_buy_amount * (existing_order.sell_amount / existing_order.buy_amount)
 
             child_order = {
@@ -72,13 +70,10 @@ def process_order(order):
 
             session.add(child_order_obj)
             session.commit()
-            #add this child order to the database
-            #process_order(child_order)
+
 
         elif new_order.buy_amount > existing_order.sell_amount:
-            exchange = existing_order.sell_amount / existing_order.buy_amount
             left_over_buy_amount = new_order.buy_amount - existing_order.sell_amount
-            #left_over_sell_amount = left_over_buy_amount * exchange
             left_over_sell_amount = left_over_buy_amount * (new_order.sell_amount / new_order.buy_amount)
 
             child_order = {
@@ -101,5 +96,5 @@ def process_order(order):
                                     )
             session.add(child_order_obj)
             session.commit()
-            #process_order(child_order)
+
             break
