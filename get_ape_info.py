@@ -17,7 +17,7 @@ with open('/home/codio/workspace/abi.json', 'r') as f:
 
 ############################
 # Connect to an Ethereum node
-api_url =  'https://ipfs.infura.io:5001/api/v0/'# YOU WILL NEED TO TO PROVIDE THE URL OF AN ETHEREUM NODE
+api_url = 'https://ipfs.infura.io:5001/api/v0/'# YOU WILL NEED TO TO PROVIDE THE URL OF AN ETHEREUM NODE
 provider = HTTPProvider(api_url)
 web3 = Web3(provider)
 
@@ -38,10 +38,10 @@ def get_ape_info(apeID):
     response = requests.get(metadata_url)
     metadata = response.json()
     data['image'] = metadata['image']
-    traits = metadata['attributes']
-    for trait in traits:
-        if trait['trait_type'] == 'eyes':
-            data['eyes'] = trait['value']
+    attributes = metadata['attributes']
+    for a in attributes:
+        if a['trait_type'] == 'eyes':
+            data['eyes'] = a['value']
             break
 
 
