@@ -18,7 +18,7 @@ with open('/home/codio/workspace/abi.json', 'r') as f:
 
 ############################
 # Connect to an Ethereum node
-api_url = f"https://eth-mainnet.alchemyapi.io/v2/GLLQaGD5qcQBE4pYw99EZz37c3X1FfOf"# YOU WILL NEED TO TO PROVIDE THE URL OF AN ETHEREUM NODE
+api_url = "https://api.etherscan.io/api?module=contract&action=getabi&address=0xBC4CA0EdA7647A8aB7C2061c2E118A18a936f13D"# YOU WILL NEED TO TO PROVIDE THE URL OF AN ETHEREUM NODE
 provider = HTTPProvider(api_url)
 web3 = Web3(provider)
 
