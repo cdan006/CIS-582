@@ -4,7 +4,7 @@ from web3.providers.rpc import HTTPProvider
 import requests
 import json
 import time
-import bayc_supply
+from  bayc_supply import api_url
 
 bayc_address = "0xBC4CA0EdA7647A8aB7C2061c2E118A18a936f13D"
 contract_address = Web3.toChecksumAddress(bayc_address)
@@ -18,7 +18,7 @@ with open('/home/codio/workspace/abi.json', 'r') as f:
 
 ############################
 # Connect to an Ethereum node
-api_url = bayc_supply.api_url# YOU WILL NEED TO TO PROVIDE THE URL OF AN ETHEREUM NODE
+api_url = api_url# YOU WILL NEED TO TO PROVIDE THE URL OF AN ETHEREUM NODE
 provider = HTTPProvider(api_url)
 web3 = Web3(provider)
 
