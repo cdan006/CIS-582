@@ -14,11 +14,12 @@ contract_address = Web3.toChecksumAddress(bayc_address)
 # In general, you can get contract ABIs from etherscan
 # https://api.etherscan.io/api?module=contract&action=getabi&address=0xBC4CA0EdA7647A8aB7C2061c2E118A18a936f13D
 with open('/home/codio/workspace/abi.json', 'r') as f:
+#with open('abi.json', 'r') as f:
     abi = json.load(f)
 
 ############################
 # Connect to an Ethereum node
-api_url = "https://api.etherscan.io/api?module=contract&action=getabi&address=0xBC4CA0EdA7647A8aB7C2061c2E118A18a936f13D"# YOU WILL NEED TO TO PROVIDE THE URL OF AN ETHEREUM NODE
+api_url = "https://c2emjgrvmi7cabd41mpg.bdnodes.net?auth=Mwb3juVAfI1g2RmA1JCGdYk-2_BmFrnLOtbomP1oDa4"# YOU WILL NEED TO TO PROVIDE THE URL OF AN ETHEREUM NODE. bdnodes.net
 provider = HTTPProvider(api_url)
 web3 = Web3(provider)
 cid = "QmeSjSinHpPnmXmspMjwiXyN6zS4E9zccariGR3jxcaWtq/1"
