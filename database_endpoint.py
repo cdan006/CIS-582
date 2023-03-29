@@ -46,14 +46,14 @@ def log_message(d):
 
 
 def is_signature_valid(payload, sig, platform):
-    if platform == 'Ethereum':
+    if platform == 'Algorand':
+        alg_encoded_msg = json.dumps(payload).encode('utf-8')
+        verify = (algosdk.util.verify_bytes(alg_encoded_msg, sig, payload['sender_pk']))
+        return verify
+    elif platform == 'Ethereum':
         eth_encoded_msg = eth_account.messages.encode_defunct(text=json.dumps(payload))
         signer_pk = eth_account.Account.recover_message(eth_encoded_msg, signature=sig)
         verify = (signer_pk == payload['sender_pk'])
-        return verify
-    elif platform == 'Algorand':
-        alg_encoded_msg = json.dumps(payload).encode('utf-8')
-        verify = (algosdk.util.verify_bytes(alg_encoded_msg, sig, payload['sender_pk']))
         return verify
     else:
         verify = False
