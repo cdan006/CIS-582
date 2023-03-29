@@ -9,10 +9,11 @@ from sqlalchemy.orm import sessionmaker
 from sqlalchemy.orm import scoped_session
 from sqlalchemy.orm import load_only
 
-from models import Base, Order, Log
+#from models import Base, Order, Log
+import models
 
 engine = create_engine('sqlite:///orders.db')
-Base.metadata.bind = engine
+models.Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 
 app = Flask(__name__)
@@ -38,19 +39,22 @@ def shutdown_session(response_or_exc):
 
 def log_message(d):
     # Takes input dictionary d and writes it to the Log table
-    log_entry = Log(message=json.dumps(d))
+    log_entry = models.Log(message=json.dumps(d))
     g.session.add(log_entry)
     g.session.commit()
     pass
+
 
 def verify_ethereum(payload, sig):
     eth_encoded_msg = eth_account.messages.encode_defunct(text=json.dumps(payload))
     signer_pk = eth_account.Account.recover_message(eth_encoded_msg, signature=sig)
     return signer_pk == payload['sender_pk']
 
+
 def verify_algorand(payload, sig):
     alg_encoded_msg = json.dumps(payload).encode('utf-8')
     return algosdk.util.verify_bytes(alg_encoded_msg, sig, payload['sender_pk'])
+
 
 def is_signature_valid(payload, sig, platform):
     if platform == 'Ethereum':
@@ -59,6 +63,8 @@ def is_signature_valid(payload, sig, platform):
         return verify_algorand(payload, sig)
     else:
         return False
+
+
 """
 ---------------- Endpoints ----------------
 """
@@ -96,8 +102,8 @@ def trade():
         sig = content['sig']
         platform = payload['platform']
         valid_signature = is_signature_valid(payload, sig, platform)
-        if valid_signature== True:
-            new_order = Order(
+        if valid_signature == True:
+            new_order = models.Order(
                 sender_pk=payload['sender_pk'],
                 receiver_pk=payload['receiver_pk'],
                 buy_currency=payload['buy_currency'],
@@ -113,11 +119,12 @@ def trade():
             log_message(payload)
             return jsonify(False)
 
+
 @app.route('/order_book')
 def order_book():
     # Your code here
     # Note that you can access the database session using g.session
-    orders = g.session.query(Order).all()
+    orders = g.session.query(models.Order).all()
     result = [
         {
             'sender_pk': order.sender_pk,
