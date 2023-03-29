@@ -48,21 +48,29 @@ def log_message(d):
 def verify_ethereum(payload, sig):
     eth_encoded_msg = eth_account.messages.encode_defunct(text=json.dumps(payload))
     signer_pk = eth_account.Account.recover_message(eth_encoded_msg, signature=sig)
-    return signer_pk == payload['sender_pk']
+    verify = (signer_pk == payload['sender_pk'])
+    return verify
 
 
 def verify_algorand(payload, sig):
     alg_encoded_msg = json.dumps(payload).encode('utf-8')
-    return algosdk.util.verify_bytes(alg_encoded_msg, sig, payload['sender_pk'])
+    verify = (algosdk.util.verify_bytes(alg_encoded_msg, sig, payload['sender_pk']))
+    return verify
 
 
 def is_signature_valid(payload, sig, platform):
     if platform == 'Ethereum':
-        return verify_ethereum(payload, sig)
+        eth_encoded_msg = eth_account.messages.encode_defunct(text=json.dumps(payload))
+        signer_pk = eth_account.Account.recover_message(eth_encoded_msg, signature=sig)
+        verify = (signer_pk == payload['sender_pk'])
+        return verify
     elif platform == 'Algorand':
-        return verify_algorand(payload, sig)
+        alg_encoded_msg = json.dumps(payload).encode('utf-8')
+        verify = (algosdk.util.verify_bytes(alg_encoded_msg, sig, payload['sender_pk']))
+        return verify
     else:
-        return False
+        verify = False
+        return verify
 
 
 """
@@ -114,32 +122,33 @@ def trade():
             )
             g.session.add(new_order)
             g.session.commit()
-            return jsonify(True)
+            result = jsonify(True)
+            return result
         else:
             log_message(payload)
-            return jsonify(False)
+            result = jsonify(False)
+            return result
 
 
 @app.route('/order_book')
 def order_book():
     # Your code here
     # Note that you can access the database session using g.session
-    orders = g.session.query(Order).all()
-    result = {
-        'data': [
-            {
-                'sender_pk': order.sender_pk,
-                'receiver_pk': order.receiver_pk,
-                'buy_currency': order.buy_currency,
-                'sell_currency': order.sell_currency,
-                'buy_amount': order.buy_amount,
-                'sell_amount': order.sell_amount,
-                'signature': order.signature,
-            } for order in orders
-        ]
-    }
-
-    return jsonify(result)
+    all_orders = g.session.query(Order).all()
+    result = {'data': []}
+    for o in all_orders:
+        order_data = {
+            'sender_pk': o.sender_pk,
+            'receiver_pk': o.receiver_pk,
+            'buy_currency': o.buy_currency,
+            'sell_currency': o.sell_currency,
+            'buy_amount': o.buy_amount,
+            'sell_amount': o.sell_amount,
+            'signature': o.signature,
+        }
+        result['data'].append(order_data)
+    result = jsonify(result)
+    return result
 
 
 if __name__ == '__main__':
