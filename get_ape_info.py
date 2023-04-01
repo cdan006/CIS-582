@@ -19,7 +19,7 @@ with open('/home/codio/workspace/abi.json', 'r') as f:
 
 ############################
 # Connect to an Ethereum node
-api_url = "https://c2emjgrvmi7cabd41mpg.bdnodes.net?auth=Mwb3juVAfI1g2RmA1JCGdYk-2_BmFrnLOtbomP1oDa4"# YOU WILL NEED TO TO PROVIDE THE URL OF AN ETHEREUM NODE. bdnodes.net
+api_url = "https://eth-mainnet.alchemyapi.io/v2/GLLQaGD5qcQBE4pYw99EZz37c3X1FfOf"# YOU WILL NEED TO TO PROVIDE THE URL OF AN ETHEREUM NODE. bdnodes.net
 provider = HTTPProvider(api_url)
 web3 = Web3(provider)
 cid = "QmeSjSinHpPnmXmspMjwiXyN6zS4E9zccariGR3jxcaWtq/1"
@@ -34,10 +34,11 @@ def get_ape_info(apeID):
     # YOUR CODE HERE
     contract = web3.eth.contract(address=contract_address, abi=abi)
     data['owner'] = contract.functions.ownerOf(apeID).call()
-    token_uri = contract.functions.tokenURI
+    token_uri = contract.functions.tokenURI(apeID).call()
     #gateway_url = 'https://gateway.pinata.cloud/ipfs/'
-    #ipfs_hash = token_uri.replace('ipfs://', '')
+    ipfs_hash = token_uri.replace('ipfs://', '')
     #metadata_url = gateway_url + ipfs_hash
+    metadata = None
     """
     for x in gateway:
         if gateway.keys()!='infura':
@@ -48,15 +49,25 @@ def get_ape_info(apeID):
             metadata = response.json()
         if metadata is not null:
             break
-        """
-    response = requests.get(gateway['pinata'].values() + cid).text  # convert this to string.  Then convert to Json
-    metadata = json.loads(response.json())
-    data['image'] = metadata['image']
-    attributes = metadata['attributes']
-    for a in attributes:
-        if a['trait_type'] == 'eyes':
-            data['eyes'] = a['value']
-            break
+    """
+    for key, gateway_url in gateway.items():
+        if key != 'infura':
+            response = requests.get(gateway_url + ipfs_hash)
+        else:
+            response = requests.post(gateway_url + ipfs_hash)
+
+        if response.status_code == 200:
+            metadata = response.json()
+            #break
+
+    #if metadata is not None:
+            #metadata = json.loads(response.json())
+            data['image'] = metadata['image']
+            attributes = metadata['attributes']
+            for a in attributes:
+                if a['trait_type'] == 'eyes':
+                    data['eyes'] = a['value']
+                    break
 
 
     assert isinstance(data, dict), f'get_ape_info{apeID} should return a dict'
