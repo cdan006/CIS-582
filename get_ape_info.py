@@ -45,16 +45,15 @@ def get_ape_info(apeID):
 
         if response.status_code == 200:
             metadata = response.json()
-            break
+            #break
 
-    if metadata is not None:
-        #metadata = json.loads(response.json())
-        data['image'] = metadata['image']
-        attributes = metadata['attributes']
-        for a in attributes:
-            if a['trait_type'].lower() == 'eyes':
-                data['eyes'] = a['value']
-                break
+    #if metadata is not None:
+            data['image'] = metadata['image']
+            attributes = metadata['attributes']
+            for a in attributes:
+                if a['trait_type'].lower() == 'eyes':
+                    data['eyes'] = a['value']
+                    break
 
 
     assert isinstance(data, dict), f'get_ape_info{apeID} should return a dict'
