@@ -35,21 +35,8 @@ def get_ape_info(apeID):
     contract = web3.eth.contract(address=contract_address, abi=abi)
     data['owner'] = contract.functions.ownerOf(apeID).call()
     token_uri = contract.functions.tokenURI(apeID).call()
-    #gateway_url = 'https://gateway.pinata.cloud/ipfs/'
     ipfs_hash = token_uri.replace('ipfs://', '')
-    #metadata_url = gateway_url + ipfs_hash
     metadata = None
-    """
-    for x in gateway:
-        if gateway.keys()!='infura':
-            response = requests.get(x.values()+cid) #convert this to string.  Then convert to Json
-            metadata = response.json()
-        else:
-            response = requests.post(x.values() + cid)  # convert this to string.  Then convert to Json
-            metadata = response.json()
-        if metadata is not null:
-            break
-    """
     for key, gateway_url in gateway.items():
         if key != 'infura':
             response = requests.get(gateway_url + ipfs_hash)
@@ -57,7 +44,7 @@ def get_ape_info(apeID):
             response = requests.post(gateway_url + ipfs_hash)
 
         if response.status_code == 200:
-            metadata = response.json()
+            metadata = json.loads(response.json())
             break
 
     if metadata is not None:
