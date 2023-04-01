@@ -13,8 +13,8 @@ contract_address = Web3.toChecksumAddress(bayc_address)
 # The file 'abi.json' has the ABI for the bored ape contract
 # In general, you can get contract ABIs from etherscan
 # https://api.etherscan.io/api?module=contract&action=getabi&address=0xBC4CA0EdA7647A8aB7C2061c2E118A18a936f13D
-#with open('/home/codio/workspace/abi.json', 'r') as f:
-with open('abi.json', 'r') as f:
+with open('/home/codio/workspace/abi.json', 'r') as f:
+#with open('abi.json', 'r') as f:
     abi = json.load(f)
 
 ############################
