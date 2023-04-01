@@ -35,19 +35,15 @@ def get_ape_info(apeID):
     contract = web3.eth.contract(address=contract_address, abi=abi)
     data['owner'] = contract.functions.ownerOf(apeID).call()
     token_uri = contract.functions.tokenURI(apeID).call()
-    ipfs_hash = token_uri.replace('ipfs://', '')
-    metadata = None
-    for key, gateway_url in gateway.items():
-        if key != 'infura':
-            response = requests.get(gateway_url+ipfs_hash)
+    token = token_uri.replace('ipfs://', '')
+    for x, y in gateway.items():
+        if x != 'infura':
+            response = requests.get(y+token)
         else:
-            response = requests.post(gateway_url+ipfs_hash)
+            response = requests.post(y+token)
 
         if response.status_code == 200:
             metadata = response.json()
-            #break
-
-    #if metadata is not None:
             data['image'] = metadata['image']
             attributes = metadata['attributes']
             for a in attributes:
@@ -60,7 +56,7 @@ def get_ape_info(apeID):
     assert all([a in data.keys() for a in
                 ['owner', 'image', 'eyes']]), f"return value should include the keys 'owner','image' and 'eyes'"
     return data
-
+"""
 if __name__ == "__main__":
     data = get_ape_info(20)
-    print(data)
+    print(data)"""
