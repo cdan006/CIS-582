@@ -23,7 +23,7 @@ api_url = "https://eth-mainnet.alchemyapi.io/v2/GLLQaGD5qcQBE4pYw99EZz37c3X1FfOf
 provider = HTTPProvider(api_url)
 web3 = Web3(provider)
 cid = "QmeSjSinHpPnmXmspMjwiXyN6zS4E9zccariGR3jxcaWtq/1"
-gateway = {'infura': "https://ipfs.infura.io:5001/api/v0/cat?arg=QmeSjSinHpPnmXmspMjwiXyN6zS4E9zccariGR3jxcaWtq/1", 'pinata': "https://gateway.pinata.cloud/ipfs/QmeSjSinHpPnmXmspMjwiXyN6zS4E9zccariGR3jxcaWtq/1", 'ipfs': "https://ipfs.io/ipfs/QmeSjSinHpPnmXmspMjwiXyN6zS4E9zccariGR3jxcaWtq/1"}
+gateway = {'infura': "https://ipfs.infura.io:5001/api/v0/cat?arg=", 'pinata': "https://gateway.pinata.cloud/ipfs/", 'ipfs': "https://ipfs.io/ipfs/"}
 
 def get_ape_info(apeID):
     assert isinstance(apeID, int), f"{apeID} is not an int"
@@ -35,13 +35,13 @@ def get_ape_info(apeID):
     contract = web3.eth.contract(address=contract_address, abi=abi)
     data['owner'] = contract.functions.ownerOf(apeID).call()
     token_uri = contract.functions.tokenURI(apeID).call()
-    #ipfs_hash = token_uri.replace('ipfs://', '')
+    ipfs_hash = token_uri.replace('ipfs://', '')
     metadata = None
     for key, gateway_url in gateway.items():
         if key != 'infura':
-            response = requests.get(gateway_url)
+            response = requests.get(gateway_url+ipfs_hash)
         else:
-            response = requests.post(gateway_url)
+            response = requests.post(gateway_url+ipfs_hash)
 
         if response.status_code == 200:
             metadata = response.json()
@@ -61,7 +61,7 @@ def get_ape_info(apeID):
     assert all([a in data.keys() for a in
                 ['owner', 'image', 'eyes']]), f"return value should include the keys 'owner','image' and 'eyes'"
     return data
-"""
+
 if __name__ == "__main__":
-    data = get_ape_info(1)
-    print(data)"""
+    data = get_ape_info(20)
+    print(data)
