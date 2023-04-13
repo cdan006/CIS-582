@@ -131,6 +131,7 @@ def get_algo_keys():
 
 
 def get_eth_keys(filename="eth_mnemonic.txt"):
+    print("Test Print", file=sys.stderr)
     w3 = Web3()
 
     # TODO: Generate or read (using the mnemonic secret)
