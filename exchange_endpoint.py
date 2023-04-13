@@ -13,9 +13,7 @@ import math
 import sys
 import traceback
 from web3 import Web3
-
-from eth_private_key import w3
-#from eth_account import Account
+from eth_account import Account
 
 # TODO: make sure you implement connect_to_algo, send_tokens_algo, and send_tokens_eth
 from send_tokens import connect_to_algo, connect_to_eth, send_tokens_algo, send_tokens_eth
@@ -140,8 +138,7 @@ def get_eth_keys(filename="eth_mnemonic.txt"):
     with open(filename, "r") as f:
         mnemonic_secret = f.read().strip()
 
-    eth_account = w3.eth.account.from_mnemonic(mnemonic_secret)
-    #eth_account = Account.from_mnemonic(mnemonic_secret)
+    eth_account = Account.from_mnemonic(mnemonic_secret)
     eth_sk = eth_account.privateKey
     eth_pk = eth_account.address
 
@@ -391,8 +388,8 @@ def trade():
                     if tx['payment']['amount'] == new_order.sell_amount:
                         equal_sell_amount= True
             elif platform == "Ethereum":
-                #transactions = g.w3.eth.getBalance(new_order.sender_pk)
-                transactions = w3.eth.get_transaction(new_order.tx_id)
+                transactions = g.w3.eth.getBalance(new_order.sender_pk)
+                #transactions = w3.eth.get_transaction(new_order.tx_id)
                 for tx in transactions:
                     if tx['value'] == new_order.sell_amount:
                         equal_sell_amount= True
@@ -413,8 +410,6 @@ def trade():
 
 @app.route('/order_book')
 def order_book():
-    #fields = ["buy_currency", "sell_currency", "buy_amount", "sell_amount", "tx_id", "receiver_pk", "sender_pk"]
-
     # Same as before
     all_orders = g.session.query(Order).all()
     result = {'data': []}
