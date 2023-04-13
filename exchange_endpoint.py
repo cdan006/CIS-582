@@ -302,6 +302,7 @@ def execute_txes(txes):
 
 @app.route('/address', methods=['POST'])
 def address():
+    print("Test Print", file=sys.stderr)
     if request.method == "POST":
         content = request.get_json(silent=True)
         if 'platform' not in content.keys():
@@ -314,13 +315,13 @@ def address():
         if content['platform'] == "Ethereum":
             # Your code here'
             eth_sk, eth_pk = get_eth_keys()
-            return jsonify({"public_key": eth_pk})
-            #return jsonify(eth_pk)
+            #return jsonify({"public_key": eth_pk})
+            return jsonify(eth_pk)
         if content['platform'] == "Algorand":
             # Your code here
             alg_sk, alg_pk = get_algo_keys()
-            #return jsonify(alg_pk)
-            return jsonify({"public_key": alg_pk})
+            return jsonify(alg_pk)
+            #return jsonify({"public_key": alg_pk})
 
 
 @app.route('/trade', methods=['POST'])
