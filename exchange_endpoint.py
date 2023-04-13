@@ -140,8 +140,8 @@ def get_eth_keys(filename="eth_mnemonic.txt"):
 
     #acct = Account.from_mnemonic(mnemonic_secret)
     acct = w3.eth.account.from_mnemonic(mnemonic_secret)
-    eth_sk = acct._private_key #.hex()
-    eth_pk = acct._address
+    eth_sk = acct.privateKey.hex()
+    eth_pk = acct.address
 
     return eth_sk, eth_pk
 
