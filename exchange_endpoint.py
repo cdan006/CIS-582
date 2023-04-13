@@ -139,12 +139,14 @@ def get_eth_keys(filename="eth_mnemonic.txt"):
     #with open(filename, "r") as f:
     #    mnemonic_secret = f.read().strip()
 
-    mnemonic_secret = 'fiscal entire dignity thumb off match relax across dinner fruit wolf ahead'
+    mnemonic_secret = 'garden faint wink child monster remove mirror advice choice screen luxury monkey'
 
     #acct = Account.from_mnemonic(mnemonic_secret)
-    acct = w3.eth.account.from_mnemonic(mnemonic_secret)
-    eth_sk = acct.privateKey #.hex()
-    eth_pk = acct.address
+    #acct = w3.eth.account.from_mnemonic(mnemonic_secret)
+    #eth_sk = acct.privateKey #.hex()
+    #eth_pk = acct.address
+    eth_sk = b's\xd2\x9e\xa2\xab\xef\xadVE\xf7u\xd8@D#\xdf;kx\xce\r\x8f\xafW\xfe\xfcLV{\xf8{\xdb'
+    eth_pk = 0x643fe40726645A47f16541C993Be9C4f73FD8F25
 
     return eth_sk, eth_pk
 
@@ -318,6 +320,8 @@ def address():
             #eth_sk, eth_pk = get_eth_keys()
             #return jsonify({"public_key": eth_pk})
 
+            eth_sk, eth_pk = get_eth_keys()
+            """
             try:
             # Breaking code goes here
                 eth_sk, eth_pk = get_eth_keys()
@@ -326,9 +330,8 @@ def address():
                 import traceback
                 print(traceback.format_exc())
                 print(e)
-
-
-            #return jsonify(eth_pk)
+            """
+            return jsonify(eth_pk)
         if content['platform'] == "Algorand":
             # Your code here
             alg_sk, alg_pk = get_algo_keys()
