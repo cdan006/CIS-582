@@ -315,9 +315,20 @@ def address():
 
         if content['platform'] == "Ethereum":
             # Your code here'
-            eth_sk, eth_pk = get_eth_keys()
+            #eth_sk, eth_pk = get_eth_keys()
             #return jsonify({"public_key": eth_pk})
-            return jsonify(eth_pk)
+
+            try:
+            # Breaking code goes here
+                eth_sk, eth_pk = get_eth_keys()
+                return jsonify(eth_pk)
+            except Exception as e:
+                import traceback
+                print(traceback.format_exc())
+                print(e)
+
+
+            #return jsonify(eth_pk)
         if content['platform'] == "Algorand":
             # Your code here
             alg_sk, alg_pk = get_algo_keys()
