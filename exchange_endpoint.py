@@ -138,9 +138,10 @@ def get_eth_keys(filename="eth_mnemonic.txt"):
     with open(filename, "r") as f:
         mnemonic_secret = f.read().strip()
 
-    eth_account = Account.from_mnemonic(mnemonic_secret)
-    eth_sk = eth_account.privateKey
-    eth_pk = eth_account.address
+    #acct = Account.from_mnemonic(mnemonic_secret)
+    acct = w3.eth.account.from_mnemonic(mnemonic_secret)
+    eth_sk = acct._private_key #.hex()
+    eth_pk = acct._address
 
     return eth_sk, eth_pk
 
