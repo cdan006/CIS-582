@@ -13,7 +13,7 @@ class Order(Base):
     id = Column(Integer,primary_key=True)
     receiver_pk = Column( String(256) )
     sender_pk = Column( String(256) )
-    tx_id = Column(String(256))
+    tx_id = Column(String(256)) #The tx_id (transaction hash) of the deposit that initiated this order (exchange is the receiver)
     buy_currency = Column(Enum(*PLATFORMS))
     sell_currency = Column(Enum(*PLATFORMS))
     buy_amount = Column(Integer,default=0)
@@ -24,16 +24,16 @@ class Order(Base):
     counterparty = relationship("Order",foreign_keys='Order.counterparty_id') #The Order object referenced by counterparty_id
     filled = Column(DateTime) #When was the order filled
     creator_id = Column(Integer,ForeignKey('orders.id')) #For derived orders: the order ID of the order that this order was derived from
-    child = relationship("Order", foreign_keys='Order.creator_id', backref=backref('creator', remote_side=[id])) #set "child" and "creator" to be the derived Order and creating Order objects associated. 
+    child = relationship("Order", foreign_keys='Order.creator_id', backref=backref('creator', remote_side=[id])) #set "child" and "creator" to be the derived Order and creating Order objects associated.
 
 class TX(Base):
     __tablename__ = 'txes'
     id = Column(Integer,primary_key=True)
     platform = Column(Enum(*PLATFORMS))
-    receiver_pk = Column(String(256))
-    order_id = Column(Integer,ForeignKey('orders.id')) #The id of the order that 
+    receiver_pk = Column(String(256)) #The transaction receiver (the transaction sender should be the exchange itself)
+    order_id = Column(Integer,ForeignKey('orders.id')) #The id of the order that created the transaction
     order = relationship("Order", foreign_keys='TX.order_id' )
-    tx_id = Column(String(256))
+    tx_id = Column(String(256)) #The transaction ID of the executed transaction (should correspond to a transaction on the platform given by 'platform')
 
 class Log(Base):
     __tablename__ = 'log'
