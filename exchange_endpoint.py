@@ -426,7 +426,7 @@ def order_book():
             'sell_currency': o.sell_currency,
             'buy_amount': o.buy_amount,
             'sell_amount': o.sell_amount,
-            #'signature': o.signature, #potentially remove me
+            'signature': o.signature, #potentially remove me
             'tx_id': o.tx_id
         }
         result['data'].append(order_data)
