@@ -411,8 +411,7 @@ def trade():
                 return result
             g.session.add(new_order)
             g.session.commit()
-            filled_order_txes = fill_order(new_order)
-            execute_txes(filled_order_txes)
+            fill_order(new_order)
             result = jsonify(True)
             return result
         else:
