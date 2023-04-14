@@ -393,42 +393,6 @@ def trade():
             eth_sk, eth_pk = get_eth_keys()
         valid_signature = is_signature_valid(payload, sig, platform)
         if valid_signature == True:
-            valid_transaction = False
-            if platform == "Algorand":
-                tx = g.icl.transaction(payload['tx_id'])
-                if (tx['sender'] == payload['sender_pk'] and
-                        tx['payment-transaction']['receiver'] == payload['receiver_pk'] and
-                        tx['payment-transaction']['amount'] == payload['sell_amount']):
-                    valid_transaction = True
-
-            elif platform == "Ethereum":
-                tx = g.w3.eth.getTransaction(payload['tx_id'])
-                if (tx['from'] == payload['sender_pk'] and
-                        tx['to'] == payload['receiver_pk'] and
-                        tx['value'] == payload['sell_amount']):
-                    valid_transaction = True
-            if valid_transaction == True:
-                new_order = Order(
-                    buy_currency=payload['buy_currency'],
-                    sell_currency=payload['sell_currency'],
-                    buy_amount=payload['buy_amount'],
-                    sell_amount=payload['sell_amount'],
-                    sender_pk=algo_pk if platform == "Algorand" else eth_pk,
-                    receiver_pk=payload['receiver_pk'],
-                    platform=platform,
-                    tx_id=payload['tx_id']
-
-                )
-                g.session.add(new_order)
-                g.session.commit()
-                result = jsonify(True)
-                return result
-            else:
-                log_message(payload)
-                result = jsonify(False)
-                return result
-
-            """
             new_order = Order(
                 buy_currency=payload['buy_currency'],
                 sell_currency=payload['sell_currency'],
@@ -463,7 +427,7 @@ def trade():
         else:
             log_message(payload)
             result = jsonify(False)
-            return result"""
+            return result
 
         return jsonify(True)
 
