@@ -235,7 +235,7 @@ def fill_order(order, txes=[]):
                                     )
             g.session.add(child_order_obj)
             g.session.commit()
-            execute_txes([new_order, existing_order])
+            #execute_txes([new_order, existing_order])
             break
     for tx in txes:
         fill_order(tx)
