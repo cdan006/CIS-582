@@ -144,13 +144,6 @@ def get_eth_keys(filename="eth_mnemonic.txt"):
     acct = w3.eth.account.from_mnemonic(mnemonic_secret)
     eth_pk = acct._address
     eth_sk = acct._private_key
-    #acct = Account.from_mnemonic(mnemonic_secret)
-    #acct = w3.eth.account.from_mnemonic(mnemonic_secret)
-    #eth_sk = acct.privateKey #.hex()
-    #eth_pk = acct.address
-    #eth_sk = b's\xd2\x9e\xa2\xab\xef\xadVE\xf7u\xd8@D#\xdf;kx\xce\r\x8f\xafW\xfe\xfcLV{\xf8{\xdb'
-    #eth_pk = 0x643fe40726645A47f16541C993Be9C4f73FD8F25
-
     return eth_sk, eth_pk
 
 
@@ -297,6 +290,7 @@ def execute_txes(txes):
             )
             g.session.add(new_tx)
             g.session.commit()
+
         else:
            print(f"Failed to execute transaction for order {tx.id}")
 
@@ -324,16 +318,6 @@ def address():
             #return jsonify({"public_key": eth_pk})
 
             eth_sk, eth_pk = get_eth_keys()
-            """
-            try:
-            # Breaking code goes here
-                eth_sk, eth_pk = get_eth_keys()
-                return jsonify(eth_pk)
-            except Exception as e:
-                import traceback
-                print(traceback.format_exc())
-                print(e)
-            """
             return jsonify(eth_pk)
         if content['platform'] == "Algorand":
             # Your code here
@@ -344,6 +328,7 @@ def address():
 
 @app.route('/trade', methods=['POST'])
 def trade():
+    w3 = Web3()
     print("In trade", file=sys.stderr)
     connect_to_blockchains()
     get_keys()
@@ -394,13 +379,13 @@ def trade():
         valid_signature = is_signature_valid(payload, sig, platform)
         if valid_signature == True:
             new_order = Order(
+                sender_pk=algo_pk if platform == "Algorand" else eth_pk,
+                receiver_pk=payload['receiver_pk'],
                 buy_currency=payload['buy_currency'],
                 sell_currency=payload['sell_currency'],
                 buy_amount=payload['buy_amount'],
                 sell_amount=payload['sell_amount'],
-                sender_pk=algo_pk if platform == "Algorand" else eth_pk,
-                receiver_pk=payload['receiver_pk'],
-                platform=platform,
+                #platform=platform,
                 tx_id = payload['tx_id']
 
             )
@@ -412,8 +397,8 @@ def trade():
                     if tx['payment']['amount'] == new_order.sell_amount:
                         equal_sell_amount= True
             elif platform == "Ethereum":
-                transactions = g.w3.eth.getBalance(new_order.sender_pk)
-                #transactions = w3.eth.get_transaction(new_order.tx_id)
+                #transactions = g.w3.eth.getBalance(new_order.sender_pk)
+                transactions = w3.eth.get_transaction(new_order.tx_id)
                 for tx in transactions:
                     if tx['value'] == new_order.sell_amount:
                         equal_sell_amount= True
@@ -435,18 +420,20 @@ def trade():
 @app.route('/order_book')
 def order_book():
     # Same as before
+    fields = ["buy_currency", "sell_currency", "buy_amount", "sell_amount", "signature", "tx_id", "receiver_pk","sender_pk"]
+
     all_orders = g.session.query(Order).all()
     result = {'data': []}
     for o in all_orders:
         order_data = {
-            'sender_pk': o.sender_pk,
-            'receiver_pk': o.receiver_pk,
             'buy_currency': o.buy_currency,
             'sell_currency': o.sell_currency,
             'buy_amount': o.buy_amount,
             'sell_amount': o.sell_amount,
-            'signature': o.signature, #potentially remove me
-            'tx_id': o.tx_id
+            'signature': o.signature,  # potentially remove me
+            'tx_id': o.tx_id,
+            'sender_pk': o.sender_pk,
+            'receiver_pk': o.receiver_pk,
         }
         result['data'].append(order_data)
 

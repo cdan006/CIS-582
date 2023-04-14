@@ -133,16 +133,6 @@ def send_tokens_eth(w3, sender_sk, txes):
     tx_ids = []
     for i, tx in enumerate(txes):
         # Your code here
-        """
-        tx_dict = {
-            'chainId': w3.eth.chain_id,
-            'from': sender_pk,
-            'to': tx['receiver_pk'],
-            'value': tx['amount'],
-            'gas': 21000,
-            'gasPrice': w3.eth.gas_price,
-            'nonce': nonce
-        }"""
 
         tx_dict = {
             'nonce': starting_nonce+i,
