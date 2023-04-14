@@ -146,7 +146,6 @@ def get_eth_keys(filename="eth_mnemonic.txt"):
     eth_sk = acct._private_key
     return eth_sk, eth_pk
 
-
 def fill_order(order, txes=[]):
     # TODO:
     # Match orders (same as Exchange Server II)
@@ -236,6 +235,7 @@ def fill_order(order, txes=[]):
                                     )
             g.session.add(child_order_obj)
             g.session.commit()
+            execute_txes([new_order, existing_order])
             break
     for tx in txes:
         fill_order(tx)
