@@ -35,11 +35,24 @@ def send_tokens_algo(acl, sender_sk, txes):
 
     # TODO: Return a list of transaction id's
 
+
+
+
     sender_pk = account.address_from_private_key(sender_sk)
+    sender_account_info = acl.account_info(sender_pk) #new
+    sender_balance = sender_account_info['amount'] #new
+    MIN_BALANCE = 100000 #new
 
     tx_ids = []
     for i, tx in enumerate(txes):
         # unsigned_tx = "Replace me with a transaction object"
+
+        required_balance = tx['amount'] + MIN_BALANCE
+        if sender_balance < required_balance:
+            print(f"Insufficient balance to send {tx['amount']} microalgo from {sender_pk} to {tx['receiver_pk']}")
+            print(f"Required balance: {required_balance}, Current balance: {sender_balance}")
+            continue
+
         unsigned_tx = transaction.PaymentTxn(sender_pk, params, tx['receiver_pk'], tx['amount'])
 
         # TODO: Sign the transaction
@@ -55,6 +68,9 @@ def send_tokens_algo(acl, sender_sk, txes):
             wait_for_confirmation_algo(acl, txid=tx_id)
             tx_ids.append(tx_id)
             print(f"Sent {tx['amount']} microalgo in transaction: {tx_id}\n")
+
+            sender_balance -= tx['amount'] #ndw
+
         except Exception as e:
             print(e)
 
