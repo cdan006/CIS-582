@@ -131,7 +131,6 @@ def get_algo_keys():
 
 
 def get_eth_keys(filename="eth_mnemonic.txt"):
-    print("Test Print", file=sys.stderr)
     w3 = Web3()
 
     # TODO: Generate or read (using the mnemonic secret)
@@ -139,14 +138,18 @@ def get_eth_keys(filename="eth_mnemonic.txt"):
     #with open(filename, "r") as f:
     #    mnemonic_secret = f.read().strip()
 
-    mnemonic_secret = 'garden faint wink child monster remove mirror advice choice screen luxury monkey'
-
+    #mnemonic_secret = 'garden faint wink child monster remove mirror advice choice screen luxury monkey'
+    w3.eth.account.enable_unaudited_hdwallet_features()
+    acct, mnemonic_secret = w3.eth.account.create_with_mnemonic()
+    acct = w3.eth.account.from_mnemonic(mnemonic_secret)
+    eth_pk = acct._address
+    eth_sk = acct._private_key
     #acct = Account.from_mnemonic(mnemonic_secret)
     #acct = w3.eth.account.from_mnemonic(mnemonic_secret)
     #eth_sk = acct.privateKey #.hex()
     #eth_pk = acct.address
-    eth_sk = b's\xd2\x9e\xa2\xab\xef\xadVE\xf7u\xd8@D#\xdf;kx\xce\r\x8f\xafW\xfe\xfcLV{\xf8{\xdb'
-    eth_pk = 0x643fe40726645A47f16541C993Be9C4f73FD8F25
+    #eth_sk = b's\xd2\x9e\xa2\xab\xef\xadVE\xf7u\xd8@D#\xdf;kx\xce\r\x8f\xafW\xfe\xfcLV{\xf8{\xdb'
+    #eth_pk = 0x643fe40726645A47f16541C993Be9C4f73FD8F25
 
     return eth_sk, eth_pk
 
