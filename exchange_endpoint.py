@@ -235,8 +235,12 @@ def fill_order(order, txes=[]):
                                     )
             g.session.add(child_order_obj)
             g.session.commit()
-            #execute_txes([new_order, existing_order])
             break
+    if new_order.filled is not None:
+        g.session.add(new_order)
+        g.session.commit()
+        execute_txes([new_order, existing_order])
+
     for tx in txes:
         fill_order(tx)
     pass
