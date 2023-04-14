@@ -271,33 +271,32 @@ def execute_txes(txes):
 
     for tx in algo_txes:
         result = send_tokens_algo(algo_sk, tx.receiver_pk, tx.sell_amount)
-        #if result==True:
-            # Add the transaction to the TX table
-        new_tx = TX(
-            platform=tx.platform,
-            receiver_pk=tx.receiver_pk,
-            order_id=tx.order_id,
-            tx_id=tx.id
-        )
-        g.session.add(new_tx)
-        g.session.commit()
-        #else:
-         #   print(f"Failed to execute transaction for order {tx.id}")
+        if result==True:
+            new_tx = TX(
+                platform=tx.platform,
+                receiver_pk=tx.receiver_pk,
+                order_id=tx.order_id,
+                tx_id=tx.id
+            )
+            g.session.add(new_tx)
+            g.session.commit()
+        else:
+            print(f"Failed to execute transaction for order {tx.id}")
     for tx in eth_txes:
         result = send_tokens_eth(eth_sk, tx.receiver_pk, tx.sell_amount)
 
-        #if result==True:
-        new_tx = TX(
-            platform=tx.platform,
-            receiver_pk=tx.receiver_pk,
-            order_id=tx.order_id,
-            tx_id=tx.id
-        )
-        g.session.add(new_tx)
-        g.session.commit()
+        if result==True:
+            new_tx = TX(
+                platform=tx.platform,
+                receiver_pk=tx.receiver_pk,
+                order_id=tx.order_id,
+                tx_id=tx.id
+            )
+            g.session.add(new_tx)
+            g.session.commit()
 
-        #else:
-         #  print(f"Failed to execute transaction for order {tx.id}")
+        else:
+           print(f"Failed to execute transaction for order {tx.id}")
 
     pass
 
@@ -412,6 +411,8 @@ def trade():
                 return result
             g.session.add(new_order)
             g.session.commit()
+            filled_order_txes = fill_order(new_order)
+            execute_txes(filled_order_txes)
             result = jsonify(True)
             return result
         else:
