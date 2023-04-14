@@ -397,8 +397,8 @@ def trade():
                     if tx['payment']['amount'] == new_order.sell_amount:
                         equal_sell_amount= True
             elif platform == "Ethereum":
-                #transactions = g.w3.eth.getBalance(new_order.sender_pk)
-                transactions = w3.eth.get_transaction(new_order.tx_id)
+                transactions = g.w3.eth.getBalance(new_order.sender_pk)
+                #transactions = w3.eth.get_transaction(new_order.tx_id)
                 for tx in transactions:
                     if tx['value'] == new_order.sell_amount:
                         equal_sell_amount= True
