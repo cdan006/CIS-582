@@ -281,6 +281,7 @@ def execute_txes(txes):
             print(f"Failed to execute transaction for order {tx.id}")
     for tx in eth_txes:
         result = send_tokens_eth(eth_sk, tx.receiver_pk, tx.sell_amount)
+
         if result==True:
             new_tx = TX(
                 platform=tx.platform,
