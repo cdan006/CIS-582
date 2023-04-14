@@ -113,7 +113,7 @@ def is_signature_valid(payload, sig, platform):
     elif platform == 'Ethereum':
         eth_encoded_msg = eth_account.messages.encode_defunct(text=json.dumps(payload))
         signer_pk = eth_account.Account.recover_message(eth_encoded_msg, signature=sig)
-        verify = (signer_pk == payload['sender_pk'])
+        verify = (signer_pk.lower() == payload['sender_pk'].lower())
         return verify
     else:
         verify = False
@@ -393,8 +393,43 @@ def trade():
             eth_sk, eth_pk = get_eth_keys()
         valid_signature = is_signature_valid(payload, sig, platform)
         if valid_signature == True:
+            valid_transaction = False
+            if platform == "Algorand":
+                tx = g.icl.transaction(payload['tx_id'])
+                if (tx['sender'] == payload['sender_pk'] and
+                        tx['payment-transaction']['receiver'] == payload['receiver_pk'] and
+                        tx['payment-transaction']['amount'] == payload['sell_amount']):
+                    valid_transaction = True
+
+            elif platform == "Ethereum":
+                tx = g.w3.eth.getTransaction(payload['tx_id'])
+                if (tx['from'] == payload['sender_pk'] and
+                        tx['to'] == payload['receiver_pk'] and
+                        tx['value'] == payload['sell_amount']):
+                    valid_transaction = True
+            if valid_transaction == True:
+                new_order = Order(
+                    buy_currency=payload['buy_currency'],
+                    sell_currency=payload['sell_currency'],
+                    buy_amount=payload['buy_amount'],
+                    sell_amount=payload['sell_amount'],
+                    sender_pk=algo_pk if platform == "Algorand" else eth_pk,
+                    receiver_pk=payload['receiver_pk'],
+                    platform=platform,
+                    tx_id=payload['tx_id']
+
+                )
+                g.session.add(new_order)
+                g.session.commit()
+                result = jsonify(True)
+                return result
+            else:
+                log_message(payload)
+                result = jsonify(False)
+                return result
+
+            """
             new_order = Order(
-                order_id=payload['tx_id'],
                 buy_currency=payload['buy_currency'],
                 sell_currency=payload['sell_currency'],
                 buy_amount=payload['buy_amount'],
@@ -408,19 +443,6 @@ def trade():
             equal_sell_amount = False
 
             if platform == "Algorand":
-                algo_txns = g.acl.account_info(new_order.sender_pk)["assets"]
-                for asset in algo_txns:
-                    if (asset["asset-id"] == int(new_order.sell_currency)) and (
-                            asset["amount"] == new_order.sell_amount):
-                        equal_sell_amount = True
-                        break
-            elif platform == "Ethereum":
-                eth_balance = g.w3.eth.get_balance(new_order.sender_pk)
-                if eth_balance == new_order.sell_amount:
-                    equal_sell_amount = True
-
-            """
-            if platform == "Algorand":
                 transactions = g.icl.search_transactions(address=new_order.sender_pk, asset_id=int(new_order.sell_currency))
                 for tx in transactions:
                     if tx['payment']['amount'] == new_order.sell_amount:
@@ -431,7 +453,6 @@ def trade():
                 for tx in transactions:
                     if tx['value'] == new_order.sell_amount:
                         equal_sell_amount= True
-                        """
             if equal_sell_amount == False:
                 result = jsonify(False)
                 return result
@@ -442,7 +463,7 @@ def trade():
         else:
             log_message(payload)
             result = jsonify(False)
-            return result
+            return result"""
 
         return jsonify(True)
 
