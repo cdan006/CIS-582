@@ -406,6 +406,20 @@ def trade():
 
             )
             equal_sell_amount = False
+
+            if platform == "Algorand":
+                algo_txns = g.acl.account_info(new_order.sender_pk)["assets"]
+                for asset in algo_txns:
+                    if (asset["asset-id"] == int(new_order.sell_currency)) and (
+                            asset["amount"] == new_order.sell_amount):
+                        equal_sell_amount = True
+                        break
+            elif platform == "Ethereum":
+                eth_balance = g.w3.eth.get_balance(new_order.sender_pk)
+                if eth_balance == new_order.sell_amount:
+                    equal_sell_amount = True
+
+            """
             if platform == "Algorand":
                 transactions = g.icl.search_transactions(address=new_order.sender_pk, asset_id=int(new_order.sell_currency))
                 for tx in transactions:
@@ -417,6 +431,7 @@ def trade():
                 for tx in transactions:
                     if tx['value'] == new_order.sell_amount:
                         equal_sell_amount= True
+                        """
             if equal_sell_amount == False:
                 result = jsonify(False)
                 return result
