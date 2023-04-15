@@ -38,8 +38,6 @@ def send_tokens_algo(acl, sender_sk, txes):
 
 
     sender_pk = account.address_from_private_key(sender_sk)
-    account_info = acl.account_info(sender_pk)
-    available_balance = account_info["amount"]
 
     tx_ids = []
     for i, tx in enumerate(txes):
@@ -48,9 +46,7 @@ def send_tokens_algo(acl, sender_sk, txes):
             creator = next((c for c in txes if c['tx_id'] == tx['creator_id']), None)
             if creator is not None:
                 creator['amount'] -= tx['amount']
-        if tx['amount'] > available_balance:
-            print(f"Insufficient balance to send {tx['amount']} microalgo from {sender_pk} to {tx['receiver_pk']}")
-            continue
+
 
         # unsigned_tx = "Replace me with a transaction object"
         unsigned_tx = transaction.PaymentTxn(sender_pk, params, tx['receiver_pk'], tx['amount'])
@@ -68,7 +64,6 @@ def send_tokens_algo(acl, sender_sk, txes):
             wait_for_confirmation_algo(acl, txid=tx_id)
             tx_ids.append(tx_id)
             print(f"Sent {tx['amount']} microalgo in transaction: {tx_id}\n")
-            available_balance -= tx['amount']
         except Exception as e:
             print(e)
 
