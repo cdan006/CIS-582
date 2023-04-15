@@ -41,7 +41,7 @@ def send_tokens_algo(acl, sender_sk, txes):
 
     tx_ids = []
     for i, tx in enumerate(txes):
-        params.first += i
+        #params.first += i
         # unsigned_tx = "Replace me with a transaction object"
         unsigned_tx = transaction.PaymentTxn(sender_pk, params, tx['receiver_pk'], tx['amount'])
 
