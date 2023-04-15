@@ -41,7 +41,7 @@ def send_tokens_algo(acl, sender_sk, txes):
 
     tx_ids = []
     for i, tx in enumerate(txes):
-        params.first += i
+        #params.first += i
         if 'creator_id' in tx:
             # Find the parent transaction and update its amount
             creator = next((c for c in txes if c['tx_id'] == tx['creator_id']), None)
