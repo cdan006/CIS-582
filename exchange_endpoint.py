@@ -239,7 +239,9 @@ def fill_order(order, txes=[]):
     if new_order.filled is not None:
         g.session.add(new_order)
         g.session.commit()
-        execute_txes([new_order, existing_order])
+        txes.append(new_order)
+        txes.append(existing_order)
+        execute_txes(txes)
 
     for tx in txes:
         fill_order(tx)
