@@ -410,15 +410,18 @@ def trade():
                         equal_sell_amount= True
             if equal_sell_amount == False:
                 result = jsonify(False)
+                print("Returning jsonify(False) due to sell amount not being equal")
                 return result
             g.session.add(new_order)
             g.session.commit()
             fill_order(new_order)
             result = jsonify(True)
+            print("Returning jsonify(True) as everything went well")
             return result
         else:
             log_message(payload)
             result = jsonify(False)
+            print("Returning jsonify(False) due to invalid signature")
             return result
 
         return jsonify(True)
