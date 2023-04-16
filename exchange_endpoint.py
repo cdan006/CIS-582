@@ -379,10 +379,12 @@ def trade():
             )
             equal_sell_amount = False
 
-
+            print("algorand")
             if platform == "Algorand":
                 transactions = g.icl.search_transactions(txid=new_order.tx_id)
+                print("transactions", transactions)
                 transaction_dump = json.dumps(transactions)
+                print("transaction_dump", transaction_dump)
                 payment = json.dumps(transaction_dump['payment'])
                 print("payment", payment)
                 if payment['amount'] == new_order.sell_amount:
