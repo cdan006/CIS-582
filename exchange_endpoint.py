@@ -94,12 +94,13 @@ def connect_to_blockchains():
 
 
 def log_message(message_dict):
-    msg = json.dumps(message_dict)
+    #msg = json.dumps(message_dict)
 
     # TODO: Add message to the Log table
-    log_entry = Log(msg)
+    log_entry = Log(message=json.dumps(message_dict))
     g.session.add(log_entry)
     g.session.commit()
+
     return
 
 
@@ -406,9 +407,8 @@ def trade():
             elif platform == "Ethereum":
                 transactions = g.w3.eth.getBalance(new_order.sender_pk)
                 #transactions = w3.eth.get_transaction(new_order.tx_id)
-                for tx in transactions:
-                    if tx['value'] == new_order.sell_amount:
-                        equal_sell_amount= True
+                if transactions >= new_order.sell_amount:
+                    equal_sell_amount = True
             if equal_sell_amount == False:
                 result = jsonify(False)
                 print("Returning jsonify(False) due to sell amount not being equal")
