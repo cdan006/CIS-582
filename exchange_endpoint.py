@@ -380,7 +380,7 @@ def trade():
             equal_sell_amount = False
 
             if platform == "Algorand":
-                transactions = g.icl.search_transactions(tx_id=new_order.tx_id)
+                transactions = g.icl.search_transactions(txid=new_order.tx_id)
                 for x in transactions:
                     if x['sell_amount'] == new_order.sell_amount:
                         equal_sell_amount = True
