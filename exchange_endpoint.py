@@ -385,9 +385,7 @@ def trade():
                 transaction_dump = json.dumps(transactions)
                 payment = json.dumps(transaction_dump['payment'])
                 print("payment", payment)
-                for x in payment:
-                    print("x",x)
-                    if x['amount'] == new_order.sell_amount:
+                if payment['amount'] == new_order.sell_amount:
                         equal_sell_amount = True
             elif platform == "Ethereum":
                 transactions = g.w3.eth.getBalance(new_order.sender_pk)
