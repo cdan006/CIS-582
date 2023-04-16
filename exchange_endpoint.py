@@ -388,6 +388,7 @@ def trade():
                 print("transaction_amount", transaction_amount)
                 print("sell_amount", new_order.sell_amount)
                 if transaction_amount == new_order.sell_amount:
+                    print("equal_sell_amount", equal_sell_amount)
                     equal_sell_amount = True
             elif platform == "Ethereum":
                 transactions = g.w3.eth.getBalance(new_order.sender_pk)
@@ -400,6 +401,7 @@ def trade():
                 return result
             g.session.add(new_order)
             g.session.commit()
+            print("test")
             fill_order(new_order)
             result = jsonify(True)
             print("Returning jsonify(True) as everything went well")
