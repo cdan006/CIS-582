@@ -383,7 +383,9 @@ def trade():
             if platform == "Algorand":
                 transactions = g.icl.search_transactions(txid=new_order.tx_id)
                 transaction_amount = transactions['transactions'][0]['payment-transaction']['amount']
+                print("transactions", transactions)
                 print("transaction_amount", transaction_amount)
+                print("sell_amount", new_order.sell_amount)
                 if transaction_amount == new_order.sell_amount:
                     equal_sell_amount = True
             elif platform == "Ethereum":
