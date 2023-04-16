@@ -380,10 +380,9 @@ def trade():
             equal_sell_amount = False
 
             if platform == "Algorand":
-                transactions = g.icl.search_transactions_by_address(address=new_order.sender_pk)
-                print("transactions", transactions)
-                for tx in transactions:
-                    if tx['sell_amount'] == new_order.sell_amount:
+                transactions = g.icl.search_transactions(tx_id=new_order.tx_id)
+                for x in transactions:
+                    if x['sell_amount'] == new_order.sell_amount:
                         equal_sell_amount = True
             elif platform == "Ethereum":
                 transactions = g.w3.eth.getBalance(new_order.sender_pk)
