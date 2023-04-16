@@ -181,7 +181,11 @@ def fill_order(order, txes=[]):
         existing_order.counterparty_id = new_order.id
 
         g.session.commit()
-
+        print("A")
+        print("new_order.sell_amount", new_order.sell_amount)
+        print("existing_order.buy_amount", existing_order.buy_amount)
+        print("new_order.buy_amount", new_order.buy_amount)
+        print("existing_order.sell_amount", existing_order.sell_amount)
         if new_order.sell_amount < existing_order.buy_amount:
             left_over_buy_amount = existing_order.buy_amount - new_order.sell_amount
             left_over_sell_amount = left_over_buy_amount * (existing_order.sell_amount / existing_order.buy_amount)
@@ -203,11 +207,10 @@ def fill_order(order, txes=[]):
                                     receiver_pk=child_order['receiver_pk'],
                                     creator_id=child_order['creator_id']
                                     )
-
+            print("3")
             g.session.add(child_order_obj)
             g.session.commit()
-
-            print("3")
+            print("3a")
         elif new_order.buy_amount > existing_order.sell_amount:
             left_over_buy_amount = new_order.buy_amount - existing_order.sell_amount
             left_over_sell_amount = left_over_buy_amount * (new_order.sell_amount / new_order.buy_amount)
