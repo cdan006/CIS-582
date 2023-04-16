@@ -386,7 +386,9 @@ def trade():
                 print("valid_signature",valid_signature)
                 print("transactions", transactions)
                 print("transaction_amount", transaction_amount)
+                print("transaction_amount type", type(transaction_amount))
                 print("sell_amount", new_order.sell_amount)
+                print("sell_amount type", type(new_order.sell_amount))
                 if transaction_amount == new_order.sell_amount:
                     print("equal_sell_amount", equal_sell_amount)
                     equal_sell_amount = True
