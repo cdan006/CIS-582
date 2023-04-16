@@ -424,7 +424,7 @@ def trade():
             print("Returning jsonify(False) due to invalid signature")
             return result
 
-        return jsonify(True)
+    return jsonify(True)
 
 
 @app.route('/order_book')
