@@ -13,12 +13,12 @@ def connect_to_algo(connection_type=''):
     if connection_type == "indexer":
         # TODO: return an instance of the v2client indexer. This is used for checking payments for tx_id's
         algod_address = "https://testnet-algorand.api.purestake.io/idx2"
-        connect = indexer.IndexerClient(algod_token=algod_token, algod_address=algod_address,headers={"X-Api-key": algod_token})
+        connect = indexer.IndexerClient(algod_token, algod_address,{"X-Api-key": algod_token})
     else:
         # TODO: return an instance of the client for sending transactions
         # Tutorial Link: https://developer.algorand.org/tutorials/creating-python-transaction-purestake-api/
         algod_address = "https://testnet-algorand.api.purestake.io/ps2"
-        connect = algod.AlgodClient(algod_token=algod_token, algod_address=algod_address, headers={"X-Api-key": algod_token})
+        connect = algod.AlgodClient(algod_token, algod_address,{"X-Api-key": algod_token})
 
     return connect
 
@@ -41,9 +41,8 @@ def send_tokens_algo(acl, sender_sk, txes):
 
     tx_ids = []
     for i, tx in enumerate(txes):
-        #params.first += i
+        params.first += i
         if 'creator_id' in tx:
-            # Find the parent transaction and update its amount
             creator = next((c for c in txes if c['tx_id'] == tx['creator_id']), None)
             if creator is not None:
                 creator['amount'] -= tx['amount']
