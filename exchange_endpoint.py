@@ -122,15 +122,11 @@ def is_signature_valid(payload, sig, platform):
 
 
 def get_algo_keys():
-    # TODO: Generate or read (using the mnemonic secret)
-    # the algorand public/private keys
     mnemonic_secret = "original crisp season bike anchor live punch survey reject egg wink moon obvious paddle hazard engage elephant chunk panther violin daughter hen genre ability alarm"
     algo_sk= algosdk.mnemonic.to_private_key(mnemonic_secret)
     algo_pk = algosdk.mnemonic.to_public_key(mnemonic_secret)
 
     return algo_sk, algo_pk
-
-
 def get_eth_keys(filename="eth_mnemonic.txt"):
     w3 = Web3()
 
@@ -360,22 +356,6 @@ def trade():
         if error:
             print(json.dumps(content))
             return jsonify(False)
-
-
-        # Your code here
-
-        # 1. Check the signature
-
-        # 2. Add the order to the table
-
-        # 3a. Check if the order is backed by a transaction equal to the sell_amount (this is new)
-
-        # 3b. Fill the order (as in Exchange Server II) if the order is valid
-
-        # 4. Execute the transactions
-
-        # If all goes well, return jsonify(True). else return jsonify(False)
-
         content = request.get_json(silent=True)
         payload = content['payload']
         sig = content['sig']
@@ -400,7 +380,7 @@ def trade():
             equal_sell_amount = False
 
             if platform == "Algorand":
-                transactions = g.icl.search_transactions(address=new_order.sender_pk, asset_id=int(new_order.sell_currency))
+                transactions = g.icl.search_transactions(address=new_order.sender_pk)
                 for tx in transactions:
                     if tx['payment']['amount'] == new_order.sell_amount:
                         equal_sell_amount= True
@@ -432,7 +412,6 @@ def trade():
 def order_book():
     # Same as before
     fields = ["buy_currency", "sell_currency", "buy_amount", "sell_amount", "signature", "tx_id", "receiver_pk","sender_pk"]
-
     all_orders = g.session.query(Order).all()
     result = {'data': []}
     for o in all_orders:
