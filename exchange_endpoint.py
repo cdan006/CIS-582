@@ -408,6 +408,7 @@ def trade():
             g.session.add(new_order)
             g.session.commit()
             print("test")
+            print("new_order", new_order)
             print("new_order type", type(new_order))
             fill_order(new_order)
             print("test2")
