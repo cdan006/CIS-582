@@ -165,7 +165,7 @@ def fill_order(order, txes=[]):
         #Order.filled.is_(None),
         #Order.buy_currency == new_order.sell_currency,
         #Order.sell_currency == new_order.buy_currency,
-        #((Order.sell_amount / Order.buy_amount) >= (new_order.buy_amount / new_order.sell_amount)),
+        ((Order.sell_amount / Order.buy_amount) >= (new_order.buy_amount / new_order.sell_amount)),
         ((Order.sell_amount * new_order.sell_amount) >= (Order.buy_amount * new_order.buy_amount)),
     ).all()
     print("2")
