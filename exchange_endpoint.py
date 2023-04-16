@@ -336,6 +336,7 @@ def address():
 def trade():
     w3 = Web3()
     print("In trade", file=sys.stderr)
+    print("In trade test")
     connect_to_blockchains()
     get_keys()
     if request.method == "POST":
