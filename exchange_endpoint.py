@@ -169,6 +169,7 @@ def fill_order(order, txes=[]):
         ((Order.sell_amount * new_order.sell_amount) >= (Order.buy_amount * new_order.buy_amount)),
     ).all()
     print("2")
+    print(orders_iterate)
     for existing_order in orders_iterate:
         print("existing_order", existing_order)
         if existing_order.filled is not None or new_order.filled is not None:
