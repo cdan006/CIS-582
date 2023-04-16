@@ -410,7 +410,16 @@ def trade():
             print("test")
             print("new_order", new_order)
             print("new_order type", type(new_order))
-            fill_order(new_order)
+            transaction_data = {
+                'sender_pk': algo_pk if platform == "Algorand" else eth_pk,
+                'receiver_pk': payload['receiver_pk'],
+                'buy_currency': payload['buy_currency'],
+                'sell_currency': payload['sell_currency'],
+                'buy_amount': payload['buy_amount'],
+                'sell_amount': payload['sell_amount'],
+                'tx_id': payload['tx_id']
+            }
+            fill_order(transaction_data)
             print("test2")
             result = jsonify(True)
             print("Returning jsonify(True) as everything went well")
