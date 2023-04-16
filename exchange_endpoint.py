@@ -338,7 +338,7 @@ def trade():
     print("In trade", file=sys.stderr)
     print("In trade test")
     connect_to_blockchains()
-    get_keys()
+    #get_keys()
     if request.method == "POST":
         content = request.get_json(silent=True)
         columns = ["buy_currency", "sell_currency", "buy_amount", "sell_amount", "platform", "tx_id", "receiver_pk"]
@@ -360,6 +360,7 @@ def trade():
         if error:
             print(json.dumps(content))
             return jsonify(False)
+
 
         # Your code here
 
