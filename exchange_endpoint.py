@@ -170,6 +170,7 @@ def fill_order(order, txes=[]):
     ).all()
     print("2")
     for existing_order in orders_iterate:
+        print("existing_order", existing_order)
         if existing_order.filled is not None or new_order.filled is not None:
             continue
 
