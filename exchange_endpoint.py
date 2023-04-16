@@ -157,7 +157,7 @@ def fill_order(order, txes=[]):
         receiver_pk=order['receiver_pk']
     )
 
-
+    print("1")
     g.session.add(new_order)
     g.session.commit()
 
@@ -168,7 +168,7 @@ def fill_order(order, txes=[]):
         ((Order.sell_amount / Order.buy_amount) >= (new_order.buy_amount / new_order.sell_amount)),
         ((Order.sell_amount * new_order.sell_amount) >= (Order.buy_amount * new_order.buy_amount)),
     ).all()
-
+    print("2")
     for existing_order in orders_iterate:
         if existing_order.filled is not None or new_order.filled is not None:
             continue
@@ -207,7 +207,7 @@ def fill_order(order, txes=[]):
             g.session.add(child_order_obj)
             g.session.commit()
 
-
+            print("3")
         elif new_order.buy_amount > existing_order.sell_amount:
             left_over_buy_amount = new_order.buy_amount - existing_order.sell_amount
             left_over_sell_amount = left_over_buy_amount * (new_order.sell_amount / new_order.buy_amount)
@@ -230,16 +230,20 @@ def fill_order(order, txes=[]):
                                     receiver_pk=child_order['receiver_pk'],
                                     creator_id = child_order['creator_id']
                                     )
+            print("4")
             g.session.add(child_order_obj)
             g.session.commit()
+            print("5")
             break
     if new_order.filled is not None:
+        print("6")
         g.session.add(new_order)
         g.session.commit()
+        print("7")
         txes.append(new_order)
         txes.append(existing_order)
         execute_txes(txes)
-
+        print("8")
     for tx in txes:
         fill_order(tx)
     pass
