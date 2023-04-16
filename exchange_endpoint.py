@@ -379,6 +379,7 @@ def trade():
             )
             equal_sell_amount = False
 
+
             if platform == "Algorand":
                 transactions = g.icl.search_transactions(txid=new_order.tx_id)
                 for x in transactions:
