@@ -187,7 +187,7 @@ def fill_order(order, txes=[]):
                 and (order.sell_amount * new_order.sell_amount) >= (order.buy_amount * new_order.buy_amount)
         )
     ]
-
+    print(filtered_orders)
     #for existing_order in orders_iterate:
     for existing_order in filtered_orders:
         print("existing_order", existing_order)
