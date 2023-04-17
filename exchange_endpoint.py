@@ -174,6 +174,15 @@ def fill_order(order, txes=[]):
     ).all()
     print("orders_iterate", orders_iterate)
 
+    orders_iterate_all = g.session.query(Order).filter(
+    ).all()
+    e = 1
+    for ord in orders_iterate_all:
+        print("Order.buy_currency", ord.buy_currency)
+        print("Order.sell_currency", ord.sell_currency)
+        print("Order.sell_amount", ord.sell_amount)
+        print("Order.buy_amount", ord.buy_amount)
+        e+=1
 
     for existing_order in orders_iterate:
         print("existing_order", existing_order)
@@ -193,6 +202,7 @@ def fill_order(order, txes=[]):
         print("existing_order.buy_amount", existing_order.buy_amount)
         print("new_order.buy_amount", new_order.buy_amount)
         print("existing_order.sell_amount", existing_order.sell_amount)
+
         if new_order.sell_amount < existing_order.buy_amount:
             left_over_buy_amount = existing_order.buy_amount - new_order.sell_amount
             left_over_sell_amount = left_over_buy_amount * (existing_order.sell_amount / existing_order.buy_amount)
