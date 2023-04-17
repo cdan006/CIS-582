@@ -172,8 +172,7 @@ def fill_order(order, txes=[]):
         ((Order.sell_amount / Order.buy_amount) >= (new_order.buy_amount / new_order.sell_amount)),
         ((Order.sell_amount * new_order.sell_amount) >= (Order.buy_amount * new_order.buy_amount)),
     ).all()
-    print("2")
-
+    print("orders_iterate", orders_iterate)
 
 
     for existing_order in orders_iterate:
