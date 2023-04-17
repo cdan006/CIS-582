@@ -158,8 +158,10 @@ def fill_order(order, txes=[]):
     )
 
     print("1")
-    print("new_order",new_order)
-
+    print("new_order buy_currency",new_order.buy_currency)
+    print("new_order sell_currency", new_order.sell_currency)
+    print("new_order sell_amount", new_order.sell_amount)
+    print("new_order buy_amount", new_order.buy_amount)
     g.session.add(new_order)
     g.session.commit()
 
