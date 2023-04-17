@@ -429,7 +429,7 @@ def trade():
                 'sell_amount': payload['sell_amount'],
                 'tx_id': payload['tx_id']
             }
-            fill_order(transaction_data)
+            #fill_order(transaction_data)
             print("test2")
             result = jsonify(True)
             print("Returning jsonify(True) as everything went well")
