@@ -178,6 +178,7 @@ def fill_order(order, txes=[]):
     ).all()
     e = 1
     for ord in orders_iterate_all:
+        print("ord type", type(ord))
         print("Order.buy_currency", ord.buy_currency)
         print("Order.sell_currency", ord.sell_currency)
         print("Order.sell_amount", ord.sell_amount)
