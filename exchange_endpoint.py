@@ -171,11 +171,11 @@ def fill_order(order, txes=[]):
     print("2")
     print("orders_iterate", orders_iterate)
     orders_iterate_removedNone = g.session.query(Order).filter(
-        #Order.filled.is_(None),
+        Order.filled.is_(None),
         Order.buy_currency == new_order.sell_currency,
-        Order.sell_currency == new_order.buy_currency,
+        #Order.sell_currency == new_order.buy_currency,
         ((Order.sell_amount / Order.buy_amount) >= (new_order.buy_amount / new_order.sell_amount)),
-        #((Order.sell_amount * new_order.sell_amount) >= (Order.buy_amount * new_order.buy_amount)),
+        ((Order.sell_amount * new_order.sell_amount) >= (Order.buy_amount * new_order.buy_amount)),
     ).all()
     print("orders_iterate_removedNone", orders_iterate_removedNone)
     orders_iterate_removedbc = g.session.query(Order).filter(
