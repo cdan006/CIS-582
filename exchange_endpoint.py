@@ -169,7 +169,7 @@ def fill_order(order, txes=[]):
         ((Order.sell_amount * new_order.sell_amount) >= (Order.buy_amount * new_order.buy_amount)),
     ).all()
     print("2")
-    print(orders_iterate)
+    print("orders_iterate", orders_iterate)
     orders_iterate_removedNone = g.session.query(Order).filter(
         #Order.filled.is_(None),
         Order.buy_currency == new_order.sell_currency,
@@ -177,7 +177,7 @@ def fill_order(order, txes=[]):
         ((Order.sell_amount / Order.buy_amount) >= (new_order.buy_amount / new_order.sell_amount)),
         ((Order.sell_amount * new_order.sell_amount) >= (Order.buy_amount * new_order.buy_amount)),
     ).all()
-    print(orders_iterate_removedNone)
+    print("orders_iterate_removedNone", orders_iterate_removedNone)
     orders_iterate_removedbc = g.session.query(Order).filter(
         # Order.filled.is_(None),
         #Order.buy_currency == new_order.sell_currency,
@@ -185,7 +185,7 @@ def fill_order(order, txes=[]):
         ((Order.sell_amount / Order.buy_amount) >= (new_order.buy_amount / new_order.sell_amount)),
         ((Order.sell_amount * new_order.sell_amount) >= (Order.buy_amount * new_order.buy_amount)),
     ).all()
-    print(orders_iterate_removedbc)
+    print("orders_iterate_removedbc", orders_iterate_removedbc)
     orders_iterate_removedsc = g.session.query(Order).filter(
         # Order.filled.is_(None),
         # Order.buy_currency == new_order.sell_currency,
@@ -193,7 +193,7 @@ def fill_order(order, txes=[]):
         ((Order.sell_amount / Order.buy_amount) >= (new_order.buy_amount / new_order.sell_amount)),
         ((Order.sell_amount * new_order.sell_amount) >= (Order.buy_amount * new_order.buy_amount)),
     ).all()
-    print(orders_iterate_removedsc)
+    print("orders_iterate_removedsc", orders_iterate_removedsc)
     orders_iterate_removedsa = g.session.query(Order).filter(
         # Order.filled.is_(None),
         # Order.buy_currency == new_order.sell_currency,
@@ -201,7 +201,7 @@ def fill_order(order, txes=[]):
         #((Order.sell_amount / Order.buy_amount) >= (new_order.buy_amount / new_order.sell_amount)),
         ((Order.sell_amount * new_order.sell_amount) >= (Order.buy_amount * new_order.buy_amount)),
     ).all()
-    print(orders_iterate_removedsa)
+    print("orders_iterate_removedsa", orders_iterate_removedsa)
     orders_iterate_removeda = g.session.query(Order).filter(
         # Order.filled.is_(None),
         # Order.buy_currency == new_order.sell_currency,
@@ -209,7 +209,7 @@ def fill_order(order, txes=[]):
         # ((Order.sell_amount / Order.buy_amount) >= (new_order.buy_amount / new_order.sell_amount)),
         #((Order.sell_amount * new_order.sell_amount) >= (Order.buy_amount * new_order.buy_amount)),
     ).all()
-    print(orders_iterate_removeda)
+    print("orders_iterate_removeda", orders_iterate_removeda)
 
 
     for existing_order in orders_iterate:
