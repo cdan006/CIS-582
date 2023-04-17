@@ -414,8 +414,6 @@ def trade():
 
             )
             equal_sell_amount = False
-
-            print("algorand")
             if platform == "Algorand":
                 transactions = g.icl.search_transactions(txid=new_order.tx_id)
                 transaction_amount = transactions['transactions'][0]['payment-transaction']['amount']
@@ -429,8 +427,8 @@ def trade():
                     equal_sell_amount = True
                     print("equal_sell_amount", equal_sell_amount)
             elif platform == "Ethereum":
-                transactions = g.w3.eth.getBalance(new_order.sender_pk)
-                #transactions = w3.eth.get_transaction(new_order.tx_id)
+                #transactions = g.w3.eth.getBalance(new_order.sender_pk)
+                transactions = w3.eth.get_transaction(new_order.tx_id)
                 if transactions >= new_order.sell_amount:
                     equal_sell_amount = True
             if equal_sell_amount == False:
@@ -442,7 +440,7 @@ def trade():
             print("test")
             print("new_order", new_order)
             print("new_order type", type(new_order))
-            """
+
             transaction_data = {
                 'sender_pk': algo_pk if platform == "Algorand" else eth_pk,
                 'receiver_pk': payload['receiver_pk'],
@@ -451,7 +449,8 @@ def trade():
                 'buy_amount': payload['buy_amount'],
                 'sell_amount': payload['sell_amount'],
                 'tx_id': payload['tx_id']
-            }"""
+            }
+            """
             transaction_data = {
                 'sender_pk': algo_pk if platform == "Algorand" else eth_pk,
                 'receiver_pk': payload['receiver_pk'],
@@ -461,6 +460,7 @@ def trade():
                 'sell_amount': payload['buy_amount'],
                 'tx_id': payload['tx_id']
             }
+            """
             fill_order(transaction_data)
             print("test2")
             result = jsonify(True)
