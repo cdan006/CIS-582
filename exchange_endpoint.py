@@ -164,7 +164,15 @@ def fill_order(order, txes=[]):
     print("new_order buy_amount", new_order.buy_amount)
     g.session.add(new_order)
     g.session.commit()
+    orders_iterate = g.session.query(Order).filter(
+        Order.filled.is_(None),
+        Order.buy_currency == new_order.buy_currency,
+        Order.sell_currency == new_order.sell_currency,
+        Order.sell_amount == new_order.sell_amount,
+        Order.buy_amount == new_order.buy_amount
+    ).all()
 
+    """
     orders_iterate = g.session.query(Order).filter(
         Order.filled.is_(None),
         Order.buy_currency == new_order.sell_currency,
@@ -183,7 +191,7 @@ def fill_order(order, txes=[]):
         print("Order.sell_currency", ord.sell_currency)
         print("Order.sell_amount", ord.sell_amount)
         print("Order.buy_amount", ord.buy_amount)
-        e+=1
+        e+=1"""
 
     for existing_order in orders_iterate:
         print("existing_order", existing_order)
