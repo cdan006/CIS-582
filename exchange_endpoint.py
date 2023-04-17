@@ -174,22 +174,18 @@ def fill_order(order, txes=[]):
     ).all()
     print("orders_iterate", orders_iterate)
 
-    all_orders = g.session.query(Order).all()
+    orders_iterate_all = g.session.query(Order).filter(
+    ).all()
+    e = 1
+    for ord in orders_iterate_all:
+        print("ord type", type(ord))
+        print("Order.buy_currency", ord.buy_currency)
+        print("Order.sell_currency", ord.sell_currency)
+        print("Order.sell_amount", ord.sell_amount)
+        print("Order.buy_amount", ord.buy_amount)
+        e+=1
 
-    # Filter orders based on the given criteria
-    filtered_orders = [
-        order for order in all_orders
-        if (
-                order.filled is None
-                and order.buy_currency == new_order.sell_currency
-                and order.sell_currency == new_order.buy_currency
-                and (order.sell_amount / order.buy_amount) >= (new_order.buy_amount / new_order.sell_amount)
-                and (order.sell_amount * new_order.sell_amount) >= (order.buy_amount * new_order.buy_amount)
-        )
-    ]
-    print(filtered_orders)
-    #for existing_order in orders_iterate:
-    for existing_order in filtered_orders:
+    for existing_order in orders_iterate:
         print("existing_order", existing_order)
         if existing_order.filled is not None or new_order.filled is not None:
             continue
