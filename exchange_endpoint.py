@@ -162,8 +162,10 @@ def fill_order(order, txes=[]):
     print("new_order sell_currency", new_order.sell_currency)
     print("new_order sell_amount", new_order.sell_amount)
     print("new_order buy_amount", new_order.buy_amount)
+
     g.session.add(new_order)
     g.session.commit()
+    """
     orders_iterate = g.session.query(Order).filter(
         Order.filled.is_(None),
         Order.buy_currency == new_order.buy_currency,
@@ -181,7 +183,7 @@ def fill_order(order, txes=[]):
         ((Order.sell_amount * new_order.sell_amount) >= (Order.buy_amount * new_order.buy_amount)),
     ).all()
     print("orders_iterate", orders_iterate)
-
+    """
     orders_iterate_all = g.session.query(Order).filter(
     ).all()
     e = 1
@@ -191,7 +193,8 @@ def fill_order(order, txes=[]):
         print("Order.sell_currency", ord.sell_currency)
         print("Order.sell_amount", ord.sell_amount)
         print("Order.buy_amount", ord.buy_amount)
-        e+=1"""
+        e+=1
+        """
 
     for existing_order in orders_iterate:
         print("existing_order", existing_order)
@@ -439,6 +442,7 @@ def trade():
             print("test")
             print("new_order", new_order)
             print("new_order type", type(new_order))
+            """
             transaction_data = {
                 'sender_pk': algo_pk if platform == "Algorand" else eth_pk,
                 'receiver_pk': payload['receiver_pk'],
@@ -446,6 +450,15 @@ def trade():
                 'sell_currency': payload['sell_currency'],
                 'buy_amount': payload['buy_amount'],
                 'sell_amount': payload['sell_amount'],
+                'tx_id': payload['tx_id']
+            }"""
+            transaction_data = {
+                'sender_pk': algo_pk if platform == "Algorand" else eth_pk,
+                'receiver_pk': payload['receiver_pk'],
+                'buy_currency': payload['sell_currency'],
+                'sell_currency': payload['buy_currency'],
+                'buy_amount': payload['sell_amount'],
+                'sell_amount': payload['buy_amount'],
                 'tx_id': payload['tx_id']
             }
             fill_order(transaction_data)
