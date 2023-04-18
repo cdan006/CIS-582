@@ -425,7 +425,7 @@ def trade():
                     equal_sell_amount = True
                     print("equal_sell_amount", equal_sell_amount)
             elif platform == "Ethereum":
-                print("E")
+                print("new_order.tx_id", new_order.tx_id)
                 #transactions = g.w3.eth.getBalance(new_order.sender_pk)
                 test_transactions = w3.eth.get_transaction(new_order.tx_id) #why is this wrong?
                 print("Ethereum transactions", test_transactions)
