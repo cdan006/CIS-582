@@ -183,7 +183,7 @@ def fill_order(order, txes=[]):
         ((Order.sell_amount * new_order.sell_amount) >= (Order.buy_amount * new_order.buy_amount)),
     ).all()
     print("orders_iterate", orders_iterate)
-    """
+
     orders_iterate_all = g.session.query(Order).filter(
     ).all()
     e = 1
@@ -194,7 +194,6 @@ def fill_order(order, txes=[]):
         print("Order.sell_amount", ord.sell_amount)
         print("Order.buy_amount", ord.buy_amount)
         e+=1
-        """
 
     for existing_order in orders_iterate:
         print("existing_order", existing_order)
@@ -421,17 +420,15 @@ def trade():
                 print("valid_signature",valid_signature)
                 print("transactions", transactions)
                 print("transaction_amount", transaction_amount)
-                print("transaction_amount type", type(transaction_amount))
                 print("sell_amount", new_order.sell_amount)
-                print("sell_amount type", type(new_order.sell_amount))
-                if transaction_amount >= new_order.sell_amount:
+                if transaction_amount >= new_order.sell_amount: #is this right?
                     equal_sell_amount = True
                     print("equal_sell_amount", equal_sell_amount)
             elif platform == "Ethereum":
                 #transactions = g.w3.eth.getBalance(new_order.sender_pk)
-                transactions = w3.eth.get_transaction(new_order.tx_id)
+                transactions = w3.eth.get_transaction(new_order.tx_id) #why is this wrong?
                 print("transactions", transactions)
-                if transactions >= new_order.sell_amount:
+                if transactions >= new_order.sell_amount: #is this right?
                     equal_sell_amount = True
             if equal_sell_amount == False:
                 result = jsonify(False)
