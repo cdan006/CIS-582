@@ -320,7 +320,7 @@ def execute_txes(txes):
         else:
             print(f"Failed to execute transaction for order {tx.id}")
     for tx in eth_txes:
-        result = send_tokens_eth(eth_sk, tx.receiver_pk, tx.sell_amount)
+        result = send_tokens_eth(g.w3, eth_sk, tx)
 
         if result==True:
             new_tx = TX(
