@@ -412,24 +412,24 @@ def trade():
                 tx_id = payload['tx_id']
 
             )
+            print("no buy_current", new_order.buy_currency)
+            print("no sell_current", new_order.sell_currency)
+            print("no buy amaount", new_order.buy_amount)
+            print("no sell amount", new_order.sell_amount)
             equal_sell_amount = False
             print("platform", platform)
             if platform == "Algorand":
                 transactions = g.icl.search_transactions(txid=new_order.tx_id)
                 transaction_amount = transactions['transactions'][0]['payment-transaction']['amount']
-                print("valid_signature",valid_signature)
-                print("transactions", transactions)
-                print("transaction_amount", transaction_amount)
-                print("sell_amount", new_order.sell_amount)
                 if transaction_amount >= new_order.sell_amount:
                     equal_sell_amount = True
                     print("equal_sell_amount", equal_sell_amount)
             elif platform == "Ethereum":
-                print("new_order.tx_id", new_order.tx_id)
+                print("E")
                 #transactions = g.w3.eth.getBalance(new_order.sender_pk)
-                test_transactions = w3.eth.get_transaction(new_order.tx_id) #why is this wrong?
-                print("Ethereum transactions", test_transactions)
-                if test_transactions['input'] >= new_order.sell_amount: #is this right?
+                transactions = w3.eth.get_transaction(new_order.tx_id) #why is this wrong?
+                print("Ethereum transactions", transactions)
+                if transactions['input'] >= new_order.sell_amount:
                     equal_sell_amount = True
             if equal_sell_amount == False:
                 result = jsonify(False)
