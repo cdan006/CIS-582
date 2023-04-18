@@ -414,21 +414,23 @@ def trade():
 
             )
             equal_sell_amount = False
+            print("platform", platform)
             if platform == "Algorand":
                 transactions = g.icl.search_transactions(txid=new_order.tx_id)
                 transaction_amount = transactions['transactions'][0]['payment-transaction']['amount']
-                #print("valid_signature",valid_signature)
-                #print("transactions", transactions)
-                #print("transaction_amount", transaction_amount)
-                #print("transaction_amount type", type(transaction_amount))
-                #print("sell_amount", new_order.sell_amount)
-                #print("sell_amount type", type(new_order.sell_amount))
+                print("valid_signature",valid_signature)
+                print("transactions", transactions)
+                print("transaction_amount", transaction_amount)
+                print("transaction_amount type", type(transaction_amount))
+                print("sell_amount", new_order.sell_amount)
+                print("sell_amount type", type(new_order.sell_amount))
                 if transaction_amount >= new_order.sell_amount:
                     equal_sell_amount = True
                     print("equal_sell_amount", equal_sell_amount)
             elif platform == "Ethereum":
                 #transactions = g.w3.eth.getBalance(new_order.sender_pk)
                 transactions = w3.eth.get_transaction(new_order.tx_id)
+                print("transactions", transactions)
                 if transactions >= new_order.sell_amount:
                     equal_sell_amount = True
             if equal_sell_amount == False:
@@ -478,6 +480,7 @@ def trade():
 @app.route('/order_book')
 def order_book():
     # Same as before
+    print("order book")
     fields = ["buy_currency", "sell_currency", "buy_amount", "sell_amount", "signature", "tx_id", "receiver_pk","sender_pk"]
     all_orders = g.session.query(Order).all()
     result = {'data': []}
@@ -489,7 +492,7 @@ def order_book():
             'sell_currency': o.sell_currency,
             'buy_amount': o.buy_amount,
             'sell_amount': o.sell_amount,
-            'signature': o.signature,  # potentially remove me
+            'signature': o.signature,
             'tx_id': o.tx_id,
 
         }
