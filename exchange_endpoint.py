@@ -428,7 +428,7 @@ def trade():
                 #transactions = g.w3.eth.getBalance(new_order.sender_pk)
                 transactions = w3.eth.get_transaction(new_order.tx_id) #why is this wrong?
                 print("transactions", transactions)
-                if transactions >= new_order.sell_amount: #is this right?
+                if transactions['input'] >= new_order.sell_amount: #is this right?
                     equal_sell_amount = True
             if equal_sell_amount == False:
                 result = jsonify(False)
