@@ -438,8 +438,8 @@ def trade():
                 result = jsonify(False)
                 print("Returning jsonify(False) due to sell amount not being equal")
                 return result
-            g.session.add(new_order)
-            g.session.commit()
+            #g.session.add(new_order)
+            #g.session.commit()
             print("test")
             print("new_order", new_order)
             print("new_order type", type(new_order))
