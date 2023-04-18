@@ -423,7 +423,7 @@ def trade():
                 #print("transaction_amount type", type(transaction_amount))
                 #print("sell_amount", new_order.sell_amount)
                 #print("sell_amount type", type(new_order.sell_amount))
-                if transaction_amount == new_order.sell_amount:
+                if transaction_amount >= new_order.sell_amount:
                     equal_sell_amount = True
                     print("equal_sell_amount", equal_sell_amount)
             elif platform == "Ethereum":
@@ -483,14 +483,15 @@ def order_book():
     result = {'data': []}
     for o in all_orders:
         order_data = {
+            'sender_pk': o.sender_pk,
+            'receiver_pk': o.receiver_pk,
             'buy_currency': o.buy_currency,
             'sell_currency': o.sell_currency,
             'buy_amount': o.buy_amount,
             'sell_amount': o.sell_amount,
-            'signature': o.signature,  # potentially remove me
+            #'signature': o.signature,  # potentially remove me
             'tx_id': o.tx_id,
-            'sender_pk': o.sender_pk,
-            'receiver_pk': o.receiver_pk,
+
         }
         result['data'].append(order_data)
 
