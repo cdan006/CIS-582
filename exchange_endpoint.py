@@ -120,7 +120,6 @@ def is_signature_valid(payload, sig, platform):
         verify = False
         return verify
 
-
 def get_algo_keys():
     mnemonic_secret = "original crisp season bike anchor live punch survey reject egg wink moon obvious paddle hazard engage elephant chunk panther violin daughter hen genre ability alarm"
     algo_sk= algosdk.mnemonic.to_private_key(mnemonic_secret)
