@@ -311,7 +311,12 @@ def execute_txes(txes):
     for tx in txes:
         print("12346")
         print("tx", tx)
-        print("tx senderpk", tx.sender_pk)
+        print("tx senderpk: ", tx.sender_pk)
+        print("tx senderpk type ", type(tx.sender_pk))
+        print("eth_pk:", eth_pk)
+        print("eth_pk type:", type(eth_pk))
+        print("algo_pk:", algo_pk)
+        print("algo_pk type:", type(algo_pk))
         if tx.sender_pk == algo_pk:
             result = send_tokens_algo(algo_sk, tx.receiver_pk, tx.sell_amount)
             print("AB")
