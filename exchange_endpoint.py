@@ -293,11 +293,6 @@ def execute_txes(txes):
     #print(f"IDs = {[tx['order_id'] for tx in txes]}")
     eth_sk, eth_pk = get_eth_keys()
     algo_sk, algo_pk = get_algo_keys()
-    print("eth_sk: ", eth_sk)
-    print("eth_pk: ", eth_pk)
-
-    print("algo_sk: ", algo_sk)
-    print("algo_pk: ", algo_pk)
 
     print("1234")
     """
@@ -316,6 +311,7 @@ def execute_txes(txes):
 
     for tx in txes:
         print("12346")
+        print("tx", tx)
         if tx['platform'] == "Algorand":
             result = send_tokens_algo(algo_sk, tx.receiver_pk, tx.sell_amount)
             print("AB")
