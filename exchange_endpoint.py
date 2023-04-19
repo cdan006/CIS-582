@@ -306,6 +306,26 @@ def execute_txes(txes):
     print("algo_result:", algo_result)
     eth_result = send_tokens_eth(g.w3, eth_sk, eth_txes)
     print("eth_result:", eth_result)
+
+    for t in algo_result:
+        new_tx = TX(
+            platform='Algorand',
+            receiver_pk=t['receiver_pk'],
+            order_id=t['id'],
+            tx_id=t['tx_id'],
+        )
+        g.session.add(new_tx)
+        g.session.commit()
+    for t in eth_result:
+        new_tx = TX(
+            platform='Ethereum',
+            receiver_pk=t['receiver_pk'],
+            order_id=t['id'],
+            tx_id=t['tx_id'],
+        )
+        g.session.add(new_tx)
+        g.session.commit()
+
     """
     for tx in txes:
         print("12346")
