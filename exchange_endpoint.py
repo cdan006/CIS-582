@@ -305,9 +305,10 @@ def execute_txes(txes):
     #          We've provided the send_tokens_algo and send_tokens_eth skeleton methods in send_tokens_old.py
     #       2. Add all transactions to the TX table
 
-
+    print("AA")
     for tx in algo_txes:
         result = send_tokens_algo(algo_sk, tx.receiver_pk, tx.sell_amount)
+        print("AB")
         if result==True:
             new_tx = TX(
                 platform=tx.platform,
@@ -315,13 +316,14 @@ def execute_txes(txes):
                 order_id=tx.order_id,
                 tx_id=tx.id
             )
+
             g.session.add(new_tx)
             g.session.commit()
         else:
             print(f"Failed to execute transaction for order {tx.id}")
     for tx in eth_txes:
         result = send_tokens_eth(g.w3, eth_sk, tx)
-
+        print("AC")
         if result==True:
             new_tx = TX(
                 platform=tx.platform,
@@ -430,7 +432,6 @@ def trade():
                     print("equal_sell_amount", equal_sell_amount)
             elif platform == "Ethereum":
                 print("E")
-                #transactions = g.w3.eth.getBalance(new_order.sender_pk)
                 transactions = g.w3.eth.get_transaction(new_order.tx_id) #why is this wrong?
                 print("Ethereum transactions", transactions)
                 if transactions['value'] >= new_order.sell_amount:
@@ -454,17 +455,6 @@ def trade():
                 'sell_amount': payload['sell_amount'],
                 'tx_id': payload['tx_id']
             }
-            """
-            transaction_data = {
-                'sender_pk': algo_pk if platform == "Algorand" else eth_pk,
-                'receiver_pk': payload['receiver_pk'],
-                'buy_currency': payload['sell_currency'],
-                'sell_currency': payload['buy_currency'],
-                'buy_amount': payload['sell_amount'],
-                'sell_amount': payload['buy_amount'],
-                'tx_id': payload['tx_id']
-            }
-            """
             fill_order(transaction_data)
             print("test2")
             result = jsonify(True)
