@@ -55,7 +55,7 @@ def send_tokens_algo(acl, sender_sk, txes):
         print("sender_pk", sender_pk)
         print("tx['sender_pk']", tx['sender_pk'])
         print("tx['receiver_pk']", tx['receiver_pk'])
-        unsigned_tx = transaction.PaymentTxn(sender_pk, params, tx['sender_pk'], tx['sell_amount'])
+        unsigned_tx = transaction.PaymentTxn(sender_pk, params, tx['receiver_pk'], tx['sell_amount'])
 
         # TODO: Sign the transaction
         # signed_tx = "Replace me with a SignedTransaction object"
