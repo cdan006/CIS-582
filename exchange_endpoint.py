@@ -292,6 +292,11 @@ def execute_txes(txes):
     print(f"IDs = {[tx['order_id'] for tx in txes]}")
     eth_sk, eth_pk = get_eth_keys()
     algo_sk, algo_pk = get_algo_keys()
+    print("eth_sk: ", eth_sk)
+    print("eth_pk: ", eth_pk)
+
+    print("algo_sk: ", algo_sk)
+    print("algo_pk: ", algo_pk)
 
     if not all(tx['platform'] in ["Algorand", "Ethereum"] for tx in txes):
         print("Error: execute_txes got an invalid platform!")
