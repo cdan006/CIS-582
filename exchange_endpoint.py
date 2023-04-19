@@ -128,7 +128,6 @@ def get_algo_keys():
 
     return algo_sk, algo_pk
 def get_eth_keys(filename="eth_mnemonic.txt"):
-    w3 = Web3()
 
     # TODO: Generate or read (using the mnemonic secret)
     # the ethereum public/private keys
@@ -136,9 +135,9 @@ def get_eth_keys(filename="eth_mnemonic.txt"):
     #    mnemonic_secret = f.read().strip()
 
     #mnemonic_secret = 'garden faint wink child monster remove mirror advice choice screen luxury monkey'
-    w3.eth.account.enable_unaudited_hdwallet_features()
-    acct, mnemonic_secret = w3.eth.account.create_with_mnemonic()
-    acct = w3.eth.account.from_mnemonic(mnemonic_secret)
+    g.w3.eth.account.enable_unaudited_hdwallet_features()
+    acct, mnemonic_secret = g.w3.eth.account.create_with_mnemonic()
+    acct = g.w3.eth.account.from_mnemonic(mnemonic_secret)
     eth_pk = acct._address
     eth_sk = acct._private_key
     return eth_sk, eth_pk
@@ -369,7 +368,6 @@ def address():
 
 @app.route('/trade', methods=['POST'])
 def trade():
-    w3 = Web3()
     print("In trade", file=sys.stderr)
     print("In trade test")
     connect_to_blockchains()
@@ -430,7 +428,7 @@ def trade():
             elif platform == "Ethereum":
                 print("E")
                 #transactions = g.w3.eth.getBalance(new_order.sender_pk)
-                transactions = g/w3.eth.get_transaction(new_order.tx_id) #why is this wrong?
+                transactions = g.w3.eth.get_transaction(new_order.tx_id) #why is this wrong?
                 print("Ethereum transactions", transactions)
                 if transactions['input'] >= new_order.sell_amount:
                     equal_sell_amount = True
