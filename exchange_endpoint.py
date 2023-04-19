@@ -111,7 +111,7 @@ def is_signature_valid(payload, sig, platform):
         print("payload['receiver_pk']", payload['receiver_pk'])
         print("payload['sender_pk']", payload['sender_pk'])
         print("verify platform: ", platform)
-        verify = (algosdk.util.verify_bytes(alg_encoded_msg, sig, payload['receiver_pk']))
+        verify = (algosdk.util.verify_bytes(alg_encoded_msg, sig, payload['sender_pk']))
         print("verify", verify)
         return verify
     elif platform == 'Ethereum':
@@ -120,7 +120,7 @@ def is_signature_valid(payload, sig, platform):
         print("Ethereum signer_pk", signer_pk)
         print("Payload signer_pk", payload['receiver_pk'])
         print("Payload signer_pk", payload['sender_pk'])
-        verify = (signer_pk.lower() == payload['receiver_pk'].lower())
+        verify = (signer_pk.lower() == payload['sender_pk'].lower())
         return verify
     else:
         verify = False
