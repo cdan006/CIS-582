@@ -290,7 +290,7 @@ def execute_txes(txes):
         return True
     print("txes: ", txes)
     print(f"Trying to execute {len(txes)} transactions")
-    print(f"IDs = {[tx['order_id'] for tx in txes]}")
+    #print(f"IDs = {[tx['order_id'] for tx in txes]}")
     eth_sk, eth_pk = get_eth_keys()
     algo_sk, algo_pk = get_algo_keys()
     print("eth_sk: ", eth_sk)
