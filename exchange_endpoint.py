@@ -451,7 +451,6 @@ def trade():
                 sell_currency=payload['sell_currency'],
                 buy_amount=payload['buy_amount'],
                 sell_amount=payload['sell_amount'],
-                platform=platform,
                 tx_id = payload['tx_id']
 
             )
