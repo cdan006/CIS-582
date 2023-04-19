@@ -305,7 +305,7 @@ def execute_txes(txes):
     #          We've provided the send_tokens_algo and send_tokens_eth skeleton methods in send_tokens_old.py
     #       2. Add all transactions to the TX table
 
-    print("AA")
+    print("EA AA")
     for tx in algo_txes:
         result = send_tokens_algo(algo_sk, tx.receiver_pk, tx.sell_amount)
         print("AB")
