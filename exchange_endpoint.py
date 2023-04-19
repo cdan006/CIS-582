@@ -164,27 +164,6 @@ def fill_order(order, txes=[]):
 
     g.session.add(new_order)
     g.session.commit()
-    """
-    orders_iterate = g.session.query(Order).filter(
-        Order.filled.is_(None),
-        Order.buy_currency == new_order.buy_currency,
-        Order.sell_currency == new_order.sell_currency,
-        Order.sell_amount == new_order.sell_amount,
-        Order.buy_amount == new_order.buy_amount
-    ).all()
-
-    """
-
-    orders_iterate_all = g.session.query(Order).filter(
-    ).all()
-    e = 1
-    for ord in orders_iterate_all:
-        print("ord type", type(ord))
-        print("Order.buy_currency", ord.buy_currency)
-        print("Order.sell_currency", ord.sell_currency)
-        print("Order.sell_amount", ord.sell_amount)
-        print("Order.buy_amount", ord.buy_amount)
-        e += 1
 
     orders_iterate = g.session.query(Order).filter(
         Order.filled.is_(None),
@@ -273,6 +252,16 @@ def fill_order(order, txes=[]):
         g.session.add(new_order)
         g.session.commit()
         print("7")
+        new_order_dict = {
+            'sender_pk': new_order.sender_pk,
+            'receiver_pk': new_order.receiver_pk,
+            'buy_currency': new_order.buy_currency,
+            'sell_currency': new_order.sell_currency,
+            'buy_amount': new_order.buy_amount,
+            'sell_amount': new_order.sell_amount,
+            'tx_id': new_order.tx_id,
+            'id': new_order.id
+        }
         existing_order_dict = {
             'sender_pk': existing_order.sender_pk,
             'receiver_pk': existing_order.receiver_pk,
@@ -280,9 +269,11 @@ def fill_order(order, txes=[]):
             'sell_currency': existing_order.sell_currency,
             'buy_amount': existing_order.buy_amount,
             'sell_amount': existing_order.sell_amount,
-            'tx_id': existing_order.tx_id
+            'tx_id': existing_order.tx_id,
+            'id': existing_order.id
         }
-        txes.append(order)
+
+        txes.append(new_order_dict)
         txes.append(existing_order_dict)
         execute_txes(txes)
         print("8")
@@ -325,9 +316,9 @@ def execute_txes(txes):
             if result == True:
                 new_tx = TX(
                     platform='Algorand',
-                    receiver_pk=tx.receiver_pk,
-                    order_id=tx.id,
-                    tx_id=tx.tx_id,
+                    receiver_pk=tx['receiver_pk'],
+                    order_id=tx['id'],
+                    tx_id=tx['tx_id'],
                 )
                 g.session.add(new_tx)
                 g.session.commit()
