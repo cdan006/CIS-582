@@ -49,7 +49,7 @@ def send_tokens_algo(acl, sender_sk, txes):
         if 'creator_id' in tx:
             creator = next((c for c in txes if c['tx_id'] == tx['creator_id']), None)
             if creator is not None:
-                creator['sell_amount'] -= tx['sell_amount']
+                creator['buy_amount'] -= tx['buy_amount']
 
         print("ST 4")
         # unsigned_tx = "Replace me with a transaction object"
@@ -57,7 +57,7 @@ def send_tokens_algo(acl, sender_sk, txes):
         print("sender_pk", sender_pk)
         print("tx['sender_pk']", tx['sender_pk'])
         print("tx['receiver_pk']", tx['receiver_pk'])
-        unsigned_tx = transaction.PaymentTxn(sender_pk, params, tx['receiver_pk'], tx['sell_amount'])
+        unsigned_tx = transaction.PaymentTxn(sender_pk, params, tx['receiver_pk'], tx['buy_amount'])
 
         # TODO: Sign the transaction
         # signed_tx = "Replace me with a SignedTransaction object"
@@ -155,14 +155,14 @@ def send_tokens_eth(w3, sender_sk, txes):
             # Find the parent transaction and update its amount
             creator = next((c for c in txes if c['tx_id'] == tx['creator_id']), None)
             if creator is not None:
-                creator['sell_amount'] -= tx['sell_amount']
+                creator['buy_amount'] -= tx['buy_amount']
 
         tx_dict = {
             'nonce': starting_nonce+i,
             'gasPrice': w3.eth.gas_price,
-            'gas': w3.eth.estimate_gas({'from': sender_pk, 'to': tx['receiver_pk'], 'data': b'', 'amount': tx['sell_amount']}),
+            'gas': w3.eth.estimate_gas({'from': sender_pk, 'to': tx['receiver_pk'], 'data': b'', 'amount': tx['buy_amount']}),
             'to': tx['receiver_pk'],
-            'value': tx['sell_amount'],
+            'value': tx['buy_amount'],
             'data': b''}
 
         signed_tx = w3.eth.account.sign_transaction(tx_dict, sender_sk)
