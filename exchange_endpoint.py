@@ -476,7 +476,7 @@ def trade():
         content = request.get_json(silent=True)
         payload = content['payload']
         sig = content['sig']
-        platform = payload['platform']
+        platform = payload['buy_currency']
         if platform == "Algorand":
             algo_sk, algo_pk = get_algo_keys()
         elif platform == "Ethereum":
@@ -521,7 +521,7 @@ def trade():
                 'buy_amount': payload['buy_amount'],
                 'sell_amount': payload['sell_amount'],
                 'tx_id': payload['tx_id'],
-                'platform': payload['platform']
+                'platform': platform
             }
             fill_order(transaction_data)
             result = jsonify(True)
