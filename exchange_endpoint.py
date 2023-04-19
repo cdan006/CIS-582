@@ -311,7 +311,7 @@ def execute_txes(txes):
     for tx in txes:
         print("12346")
         print("tx", tx)
-        if tx['sender_pk'] == algo_pk:
+        if tx['platform'] == "Algorand":
             result = send_tokens_algo(algo_sk, tx.receiver_pk, tx.sell_amount)
             print("AB")
             if result == True:
@@ -326,7 +326,7 @@ def execute_txes(txes):
                 g.session.commit()
             else:
                 print(f"Failed to execute transaction for order {tx.id}")
-        elif tx['sender_pk'] == eth_pk:
+        elif tx['platform'] == "Ethereum":
             result = send_tokens_eth(g.w3, eth_sk, tx)
             print("AC")
             if result == True:
