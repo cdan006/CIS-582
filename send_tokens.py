@@ -42,7 +42,7 @@ def send_tokens_algo(acl, sender_sk, txes):
     tx_ids = []
     print("ST 2")
     for i, tx in enumerate(txes):
-        params.first += i
+        params.last = params.first+i+1000-len(txes)
         print("ST 3")
         if 'creator_id' in tx:
             creator = next((c for c in txes if c['tx_id'] == tx['creator_id']), None)
@@ -68,7 +68,7 @@ def send_tokens_algo(acl, sender_sk, txes):
             wait_for_confirmation_algo(acl, txid=tx_id)
             tx_ids.append(tx_id)
             #tx['tx_id'] = tx_id
-            print(f"Sent {tx['amount']} microalgo in transaction: {tx_id}\n")
+            print(f"Sent {tx['sell_amount']} microalgo in transaction: {tx_id}\n")
         except Exception as e:
             print(e)
 
