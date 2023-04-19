@@ -109,13 +109,13 @@ def is_signature_valid(payload, sig, platform):
         print("H")
         alg_encoded_msg = json.dumps(payload).encode('utf-8')
         print("I")
-        verify = (algosdk.util.verify_bytes(alg_encoded_msg, sig, payload['sender_pk']))
+        verify = (algosdk.util.verify_bytes(alg_encoded_msg, sig, payload['receiver_pk']))
         print("J")
         return verify
     elif platform == 'Ethereum':
         eth_encoded_msg = eth_account.messages.encode_defunct(text=json.dumps(payload))
         signer_pk = eth_account.Account.recover_message(eth_encoded_msg, signature=sig)
-        verify = (signer_pk.lower() == payload['sender_pk'].lower())
+        verify = (signer_pk.lower() == payload['receiver_pk'].lower())
         return verify
     else:
         verify = False
