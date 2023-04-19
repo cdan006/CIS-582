@@ -152,6 +152,7 @@ def send_tokens_eth(w3, sender_sk, txes):
             creator = next((c for c in txes if c['tx_id'] == tx['creator_id']), None)
             if creator is not None:
                 creator['buy_amount'] -= tx['buy_amount']
+        print("sender_pk", sender_pk)
         print("Gas")
         print('gasPrice ', w3.eth.gas_price)
         print('to ', tx['receiver_pk'])
@@ -160,8 +161,7 @@ def send_tokens_eth(w3, sender_sk, txes):
         tx_dict = {
             'nonce': starting_nonce+i,
             'gasPrice': w3.eth.gas_price,
-            #'gas': w3.eth.estimate_gas({'from': sender_pk, 'to': tx['receiver_pk'], 'data': b'', 'amount': tx['buy_amount']}),
-            'gas': 1000000,
+            'gas': w3.eth.estimate_gas({'from': sender_pk, 'to': tx['receiver_pk'], 'data': b'', 'amount': tx['buy_amount']}),
             'to': tx['receiver_pk'],
             'value': tx['buy_amount'],
             'data': b''}
