@@ -300,18 +300,54 @@ def execute_txes(txes):
     print("algo_pk: ", algo_pk)
 
     print("1234")
+    """
     if not all(tx['platform'] in ["Algorand", "Ethereum"] for tx in txes):
         print("Error: execute_txes got an invalid platform!")
         print(tx['platform'] for tx in txes)
+        """
     print("12345")
-    algo_txes = [tx for tx in txes if tx['platform'] == "Algorand"]
-    eth_txes = [tx for tx in txes if tx['platform'] == "Ethereum"]
+    #algo_txes = [tx for tx in txes if tx['platform'] == "Algorand"]
+    #eth_txes = [tx for tx in txes if tx['platform'] == "Ethereum"]
 
     # TODO:
     #       1. Send tokens on the Algorand and eth testnets, appropriately
     #          We've provided the send_tokens_algo and send_tokens_eth skeleton methods in send_tokens_old.py
     #       2. Add all transactions to the TX table
 
+    for tx in txes:
+        print("12346")
+        if tx['platform'] == "Algorand":
+            result = send_tokens_algo(algo_sk, tx.receiver_pk, tx.sell_amount)
+            print("AB")
+            if result == True:
+                new_tx = TX(
+                    platform=tx.platform,
+                    receiver_pk=tx.receiver_pk,
+                    order_id=tx.order_id,
+                    tx_id=tx.id
+                )
+
+                g.session.add(new_tx)
+                g.session.commit()
+            else:
+                print(f"Failed to execute transaction for order {tx.id}")
+        elif tx['platform'] == "Ethereum":
+            result = send_tokens_eth(g.w3, eth_sk, tx)
+            print("AC")
+            if result == True:
+                new_tx = TX(
+                    platform=tx.platform,
+                    receiver_pk=tx.receiver_pk,
+                    order_id=tx.order_id,
+                    tx_id=tx.id
+                )
+                g.session.add(new_tx)
+                g.session.commit()
+
+            else:
+                print(f"Failed to execute transaction for order {tx.id}")
+
+    """
     print("EA AA")
     for tx in algo_txes:
         result = send_tokens_algo(algo_sk, tx.receiver_pk, tx.sell_amount)
@@ -343,7 +379,7 @@ def execute_txes(txes):
 
         else:
            print(f"Failed to execute transaction for order {tx.id}")
-
+        """
     pass
 
 
