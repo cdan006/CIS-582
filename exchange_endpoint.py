@@ -266,7 +266,7 @@ def fill_order(order, txes=[]):
             'sell_amount': new_order.sell_amount,
             'tx_id': new_order.tx_id,
             'id': new_order.id,
-            'platform': existing_order_platform
+            'platform': new_order_platform
         }
         existing_order_dict = {
             'sender_pk': existing_order.sender_pk,
@@ -277,7 +277,7 @@ def fill_order(order, txes=[]):
             'sell_amount': existing_order.sell_amount,
             'tx_id': existing_order.tx_id,
             'id': existing_order.id,
-            'platform':new_order_platform
+            'platform':existing_order_platform
         }
 
         txes.append(new_order_dict)
