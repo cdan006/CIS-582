@@ -274,9 +274,17 @@ def fill_order(order, txes=[]):
         g.session.add(new_order)
         g.session.commit()
         print("7")
-        print("existing_order type", type(existing_order))
+        existing_order_dict = {
+            'sender_pk': existing_order.sender_pk,
+            'receiver_pk': existing_order.receiver_pk,
+            'buy_currency': existing_order.buy_currency,
+            'sell_currency': existing_order.sell_currency,
+            'buy_amount': existing_order.buy_amount,
+            'sell_amount': existing_order.sell_amount,
+            'tx_id': existing_order.tx_id
+        }
         txes.append(order)
-        txes.append(existing_order)
+        txes.append(existing_order_dict)
         execute_txes(txes)
         print("8")
     for tx in txes:
@@ -311,7 +319,7 @@ def execute_txes(txes):
 
     for tx in txes:
         print("12346")
-        if tx.sender_pk == algo_pk:
+        if tx['sender_pk'] == algo_pk:
             print("inside")
             result = send_tokens_algo(g.acl, algo_sk, tx)
             print("AB")
@@ -326,7 +334,7 @@ def execute_txes(txes):
                 g.session.commit()
             else:
                 print(f"Failed to execute transaction for order {tx.id}")
-        elif tx.sender_pk == eth_pk:
+        elif tx['sender_pk'] == eth_pk:
             result = send_tokens_eth(g.w3, eth_sk, tx)
             print("AC")
             if result == True:
