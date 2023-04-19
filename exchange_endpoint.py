@@ -477,6 +477,7 @@ def trade():
         payload = content['payload']
         sig = content['sig']
         platform = payload['buy_currency']
+        print("platform buy currency", platform)
         if platform == "Algorand":
             algo_sk, algo_pk = get_algo_keys()
         elif platform == "Ethereum":
