@@ -306,6 +306,7 @@ def execute_txes(txes):
         print("12346")
         if tx['sender_pk'] == algo_pk:
             print("inside")
+            print("tx inside", tx)
             result = send_tokens_algo(g.acl, algo_sk, tx)
             print("AB")
             if result == True:
