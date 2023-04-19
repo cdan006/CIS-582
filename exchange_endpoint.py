@@ -493,6 +493,9 @@ def trade():
                 tx_id=payload['tx_id']
 
             )
+            print("new_order sender_pk", new_order.sender_pk)
+            print("new_order buy current", new_order.buy_currency)
+            print("new_order platform", platform)
             equal_sell_amount = False
             if platform == "Algorand":
                 transactions = g.icl.search_transactions(txid=new_order.tx_id)
