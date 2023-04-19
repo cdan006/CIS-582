@@ -482,7 +482,9 @@ def trade():
             algo_sk, algo_pk = get_algo_keys()
         elif platform == "Ethereum":
             eth_sk, eth_pk = get_eth_keys()
+        print("X")
         valid_signature = is_signature_valid(payload, sig, platform)
+        print("Y")
         if valid_signature == True:
             new_order = Order(
                 sender_pk=algo_pk if platform == "Algorand" else eth_pk,
