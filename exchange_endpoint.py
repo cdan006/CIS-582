@@ -94,7 +94,7 @@ def connect_to_blockchains():
 
 
 def log_message(message_dict):
-    #msg = json.dumps(message_dict)
+    # msg = json.dumps(message_dict)
 
     # TODO: Add message to the Log table
     log_entry = Log(message=json.dumps(message_dict))
@@ -102,8 +102,6 @@ def log_message(message_dict):
     g.session.commit()
 
     return
-
-
 
 
 def is_signature_valid(payload, sig, platform):
@@ -120,27 +118,31 @@ def is_signature_valid(payload, sig, platform):
         verify = False
         return verify
 
+
 def get_algo_keys():
     mnemonic_secret = "original crisp season bike anchor live punch survey reject egg wink moon obvious paddle hazard engage elephant chunk panther violin daughter hen genre ability alarm"
-    algo_sk= algosdk.mnemonic.to_private_key(mnemonic_secret)
+    algo_sk = algosdk.mnemonic.to_private_key(mnemonic_secret)
     algo_pk = algosdk.mnemonic.to_public_key(mnemonic_secret)
 
     return algo_sk, algo_pk
+
+
 def get_eth_keys(filename="eth_mnemonic.txt"):
     w3 = Web3()
 
     # TODO: Generate or read (using the mnemonic secret)
     # the ethereum public/private keys
-    #with open(filename, "r") as f:
+    # with open(filename, "r") as f:
     #    mnemonic_secret = f.read().strip()
 
-    #mnemonic_secret = 'garden faint wink child monster remove mirror advice choice screen luxury monkey'
+    # mnemonic_secret = 'garden faint wink child monster remove mirror advice choice screen luxury monkey'
     w3.eth.account.enable_unaudited_hdwallet_features()
     acct, mnemonic_secret = w3.eth.account.create_with_mnemonic()
     acct = w3.eth.account.from_mnemonic(mnemonic_secret)
     eth_pk = acct._address
     eth_sk = acct._private_key
     return eth_sk, eth_pk
+
 
 def fill_order(order, txes=[]):
     # TODO:
@@ -157,7 +159,7 @@ def fill_order(order, txes=[]):
     )
 
     print("1")
-    print("new_order buy_currency",new_order.buy_currency)
+    print("new_order buy_currency", new_order.buy_currency)
     print("new_order sell_currency", new_order.sell_currency)
     print("new_order sell_amount", new_order.sell_amount)
     print("new_order buy_amount", new_order.buy_amount)
@@ -236,7 +238,7 @@ def fill_order(order, txes=[]):
                                     sell_amount=child_order['sell_amount'],
                                     sender_pk=child_order['sender_pk'],
                                     receiver_pk=child_order['receiver_pk'],
-                                    creator_id = child_order['creator_id']
+                                    creator_id=child_order['creator_id']
                                     )
             print("4")
             g.session.add(child_order_obj)
@@ -273,8 +275,8 @@ def fill_order(order, txes=[]):
         txes.append(existing_order_dict)
         execute_txes(txes)
         print("8")
-    #for tx in txes:
-        #fill_order(tx)
+    # for tx in txes:
+    # fill_order(tx)
     pass
 
 
@@ -288,11 +290,11 @@ def execute_txes(txes):
     algo_sk, algo_pk = get_algo_keys()
 
     print("1234")
-    """
+
     if not all(tx['platform'] in ["Algorand", "Ethereum"] for tx in txes):
         print("Error: execute_txes got an invalid platform!")
         print(tx['platform'] for tx in txes)
-        """
+
     print("12345")
     algo_txes = [tx for tx in txes if tx['platform'] == "Algorand"]
     eth_txes = [tx for tx in txes if tx['platform'] == "Ethereum"]
@@ -301,11 +303,18 @@ def execute_txes(txes):
     #       1. Send tokens on the Algorand and eth testnets, appropriately
     #          We've provided the send_tokens_algo and send_tokens_eth skeleton methods in send_tokens.py
     #       2. Add all transactions to the TX table
-
-    algo_result = send_tokens_algo(g.acl, algo_sk, algo_txes)
-    print("algo_result:", algo_result)
-    eth_result = send_tokens_eth(g.w3, eth_sk, eth_txes)
-    print("eth_result:", eth_result)
+    try:
+        algo_result = send_tokens_algo(g.acl, algo_sk, algo_txes)
+    except Exception as e:
+        import traceback
+        print(traceback.format_exc())
+        print(e)
+    try:
+        eth_result = send_tokens_eth(g.w3, eth_sk, eth_txes)
+    except Exception as e:
+        import traceback
+        print(traceback.format_exc())
+        print(e)
 
     for t in algo_result:
         new_tx = TX(
@@ -415,8 +424,8 @@ def address():
 
         if content['platform'] == "Ethereum":
             # Your code here'
-            #eth_sk, eth_pk = get_eth_keys()
-            #return jsonify({"public_key": eth_pk})
+            # eth_sk, eth_pk = get_eth_keys()
+            # return jsonify({"public_key": eth_pk})
 
             eth_sk, eth_pk = get_eth_keys()
             return jsonify(eth_pk)
@@ -424,7 +433,7 @@ def address():
             # Your code here
             alg_sk, alg_pk = get_algo_keys()
             return jsonify(alg_pk)
-            #return jsonify({"public_key": alg_pk})
+            # return jsonify({"public_key": alg_pk})
 
 
 @app.route('/trade', methods=['POST'])
@@ -471,7 +480,7 @@ def trade():
                 sell_currency=payload['sell_currency'],
                 buy_amount=payload['buy_amount'],
                 sell_amount=payload['sell_amount'],
-                tx_id = payload['tx_id']
+                tx_id=payload['tx_id']
 
             )
             equal_sell_amount = False
@@ -482,15 +491,15 @@ def trade():
                 if transaction_amount >= new_order.sell_amount:
                     equal_sell_amount = True
             elif platform == "Ethereum":
-                transactions = g.w3.eth.get_transaction(new_order.tx_id) #why is this wrong?
+                transactions = g.w3.eth.get_transaction(new_order.tx_id)  # why is this wrong?
                 if transactions['value'] >= new_order.sell_amount:
                     equal_sell_amount = True
             if equal_sell_amount == False:
                 result = jsonify(False)
                 print("Returning jsonify(False) due to sell amount not being equal")
                 return result
-            #g.session.add(new_order)
-            #g.session.commit()
+            # g.session.add(new_order)
+            # g.session.commit()
             transaction_data = {
                 'sender_pk': algo_pk if platform == "Algorand" else eth_pk,
                 'receiver_pk': payload['receiver_pk'],
@@ -516,7 +525,8 @@ def trade():
 @app.route('/order_book')
 def order_book():
     # Same as before
-    fields = ["buy_currency", "sell_currency", "buy_amount", "sell_amount", "signature", "tx_id", "receiver_pk","sender_pk"]
+    fields = ["buy_currency", "sell_currency", "buy_amount", "sell_amount", "signature", "tx_id", "receiver_pk",
+              "sender_pk"]
     all_orders = g.session.query(Order).all()
     result = {'data': []}
     for o in all_orders:
