@@ -47,18 +47,20 @@ def send_tokens_algo(acl, sender_sk, txes):
         if 'creator_id' in tx:
             creator = next((c for c in txes if c['tx_id'] == tx['creator_id']), None)
             if creator is not None:
-                creator['amount'] -= tx['amount']
+                creator['sell_amount'] -= tx['sell_amount']
 
         print("ST 4")
         # unsigned_tx = "Replace me with a transaction object"
-        unsigned_tx = transaction.PaymentTxn(sender_pk, params, tx['receiver_pk'], tx['amount'])
+        print("receiver_pk", tx['receiver_pk'])
+        print("sell_amount", tx['sell_amount'])
+        unsigned_tx = transaction.PaymentTxn(sender_pk, params, tx['receiver_pk'], tx['sell_amount']) #stopped here
 
         # TODO: Sign the transaction
         # signed_tx = "Replace me with a SignedTransaction object"
         signed_tx = unsigned_tx.sign(sender_sk)
         print("ST 5")
         try:
-            print(f"Sending {tx['amount']} microalgo from {sender_pk} to {tx['receiver_pk']}")
+            print(f"Sending {tx['sell_amount']} microalgo from {sender_pk} to {tx['receiver_pk']}")
 
             # TODO: Send the transaction to the testnet
 
@@ -66,7 +68,7 @@ def send_tokens_algo(acl, sender_sk, txes):
             tx_id = acl.send_transaction(signed_tx)
             wait_for_confirmation_algo(acl, txid=tx_id)
             tx_ids.append(tx_id)
-            tx['tx_id'] = tx_id
+            #tx['tx_id'] = tx_id
             print(f"Sent {tx['amount']} microalgo in transaction: {tx_id}\n")
         except Exception as e:
             print(e)
@@ -149,14 +151,14 @@ def send_tokens_eth(w3, sender_sk, txes):
             # Find the parent transaction and update its amount
             creator = next((c for c in txes if c['tx_id'] == tx['creator_id']), None)
             if creator is not None:
-                creator['amount'] -= tx['amount']
+                creator['sell_amount'] -= tx['sell_amount']
 
         tx_dict = {
             'nonce': starting_nonce+i,
             'gasPrice': w3.eth.gas_price,
-            'gas': w3.eth.estimate_gas({'from': sender_pk, 'to': tx['receiver_pk'], 'data': b'', 'amount': tx['amount']}),
+            'gas': w3.eth.estimate_gas({'from': sender_pk, 'to': tx['receiver_pk'], 'data': b'', 'amount': tx['sell_amount']}),
             'to': tx['receiver_pk'],
-            'value': tx['amount'],
+            'value': tx['sell_amount'],
             'data': b''}
 
         signed_tx = w3.eth.account.sign_transaction(tx_dict, sender_sk)

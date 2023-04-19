@@ -172,12 +172,8 @@ def fill_order(order, txes=[]):
         ((Order.sell_amount / Order.buy_amount) >= (new_order.buy_amount / new_order.sell_amount)),
         ((Order.sell_amount * new_order.sell_amount) >= (Order.buy_amount * new_order.buy_amount)),
     ).all()
-    print("orders_iterate", orders_iterate)
-
-
 
     for existing_order in orders_iterate:
-        print("existing_order", existing_order)
         if existing_order.filled is not None or new_order.filled is not None:
             continue
 
@@ -287,7 +283,6 @@ def execute_txes(txes):
         return True
     if len(txes) == 0:
         return True
-    print("txes: ", txes)
     print(f"Trying to execute {len(txes)} transactions")
     eth_sk, eth_pk = get_eth_keys()
     algo_sk, algo_pk = get_algo_keys()
@@ -466,9 +461,7 @@ def trade():
                     equal_sell_amount = True
                     print("equal_sell_amount", equal_sell_amount)
             elif platform == "Ethereum":
-                print("E")
                 transactions = g.w3.eth.get_transaction(new_order.tx_id) #why is this wrong?
-                print("Ethereum transactions", transactions)
                 if transactions['value'] >= new_order.sell_amount:
                     equal_sell_amount = True
             if equal_sell_amount == False:
@@ -477,10 +470,6 @@ def trade():
                 return result
             #g.session.add(new_order)
             #g.session.commit()
-            print("test")
-            print("new_order", new_order)
-            print("new_order type", type(new_order))
-
             transaction_data = {
                 'sender_pk': algo_pk if platform == "Algorand" else eth_pk,
                 'receiver_pk': payload['receiver_pk'],
@@ -491,7 +480,6 @@ def trade():
                 'tx_id': payload['tx_id']
             }
             fill_order(transaction_data)
-            print("test2")
             result = jsonify(True)
             print("Returning jsonify(True) as everything went well")
             return result
