@@ -52,7 +52,7 @@ def send_tokens_algo(acl, sender_sk, txes):
         print("ST 4")
         # unsigned_tx = "Replace me with a transaction object"
         print("tx", tx)
-        unsigned_tx = transaction.PaymentTxn(sender_pk, params, tx['receiver_pk'], tx['sell_amount'])
+        unsigned_tx = transaction.PaymentTxn(sender_pk, params, tx['sender_pk'], tx['sell_amount'])
 
         # TODO: Sign the transaction
         # signed_tx = "Replace me with a SignedTransaction object"
