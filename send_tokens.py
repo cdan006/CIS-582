@@ -38,7 +38,7 @@ def send_tokens_algo(acl, sender_sk, txes):
 
     print("ST 1")
     sender_pk = account.address_from_private_key(sender_sk)
-    print("sender_pk length: ", sender_pk)
+    print("sender_pk length: ", len(sender_pk))
     tx_ids = []
     print("ST 2")
     for i, tx in enumerate(txes):
