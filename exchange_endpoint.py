@@ -291,11 +291,11 @@ def execute_txes(txes):
     print("txes: ", txes)
     print("txes type: ", type(txes))
     print("1234")
-    """
+
     if not all(tx['platform'] in ["Algorand", "Ethereum"] for tx in txes):
         print("Error: execute_txes got an invalid platform!")
         print(tx['platform'] for tx in txes)
-"""
+
     print("12345")
     algo_txes = [tx for tx in txes if tx['platform'] == "Algorand"]
     eth_txes = [tx for tx in txes if tx['platform'] == "Ethereum"]
@@ -508,7 +508,8 @@ def trade():
                 'sell_currency': payload['sell_currency'],
                 'buy_amount': payload['buy_amount'],
                 'sell_amount': payload['sell_amount'],
-                'tx_id': payload['tx_id']
+                'tx_id': payload['tx_id'],
+                'platform': payload['platform']
             }
             fill_order(transaction_data)
             result = jsonify(True)
