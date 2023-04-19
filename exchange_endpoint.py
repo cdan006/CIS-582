@@ -288,9 +288,9 @@ def execute_txes(txes):
     print(f"Trying to execute {len(txes)} transactions")
     eth_sk, eth_pk = get_eth_keys()
     algo_sk, algo_pk = get_algo_keys()
-
-    print("1234")
     print("txes: ", txes)
+    print("txes type: ", type(txes))
+    print("1234")
     if not all(tx['platform'] in ["Algorand", "Ethereum"] for tx in txes):
         print("Error: execute_txes got an invalid platform!")
         print(tx['platform'] for tx in txes)
