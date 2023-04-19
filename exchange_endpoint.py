@@ -310,16 +310,17 @@ def execute_txes(txes):
 
     for tx in txes:
         print("12346")
+        print("tx", tx)
         print("tx senderpk", tx['sender_pk'])
         if tx['sender_pk'] == algo_pk:
             result = send_tokens_algo(algo_sk, tx.receiver_pk, tx.sell_amount)
             print("AB")
             if result == True:
                 new_tx = TX(
-                    platform=tx.platform,
+                    platform='Algorand',
                     receiver_pk=tx.receiver_pk,
-                    order_id=tx.order_id,
-                    tx_id=tx.id
+                    order_id=tx.id,
+                    tx_id=tx.tx_id,
                 )
 
                 g.session.add(new_tx)
@@ -331,10 +332,10 @@ def execute_txes(txes):
             print("AC")
             if result == True:
                 new_tx = TX(
-                    platform=tx.platform,
+                    platform='Ethereum',
                     receiver_pk=tx.receiver_pk,
-                    order_id=tx.order_id,
-                    tx_id=tx.id
+                    order_id=tx.id,
+                    tx_id=tx.tx_id
                 )
                 g.session.add(new_tx)
                 g.session.commit()
