@@ -274,8 +274,9 @@ def fill_order(order, txes=[]):
         g.session.add(new_order)
         g.session.commit()
         print("7")
-        execute_txes(new_order)
-        execute_txes(existing_order)
+        txes.append(new_order)
+        txes.append(existing_order)
+        execute_txes(txes)
         print("8")
     for tx in txes:
         fill_order(tx)
