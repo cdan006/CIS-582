@@ -318,9 +318,10 @@ def execute_txes(txes):
         print("algo_pk:", algo_pk)
         print("algo_pk type:", type(algo_pk))
         equal = tx.sender_pk == algo_pk
-        print("Equal: ", equal)
+
         if tx.sender_pk == algo_pk:
-            result = send_tokens_algo(algo_sk, tx.receiver_pk, tx.sell_amount)
+            print("inside")
+            result = send_tokens_algo(g.acl, algo_sk, tx)
             print("AB")
             if result == True:
                 new_tx = TX(
