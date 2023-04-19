@@ -288,6 +288,7 @@ def execute_txes(txes):
         return True
     if len(txes) == 0:
         return True
+    print("txes: ", txes)
     print(f"Trying to execute {len(txes)} transactions")
     print(f"IDs = {[tx['order_id'] for tx in txes]}")
     eth_sk, eth_pk = get_eth_keys()
