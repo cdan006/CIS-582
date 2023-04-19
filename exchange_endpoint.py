@@ -330,7 +330,6 @@ def execute_txes(txes):
                     order_id=tx.id,
                     tx_id=tx.tx_id,
                 )
-
                 g.session.add(new_tx)
                 g.session.commit()
             else:
