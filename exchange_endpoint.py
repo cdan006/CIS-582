@@ -423,6 +423,7 @@ def trade():
             print("platform", platform)
             if platform == "Algorand":
                 transactions = g.icl.search_transactions(txid=new_order.tx_id)
+                print(transactions)
                 transaction_amount = transactions['transactions'][0]['payment-transaction']['amount']
                 if transaction_amount >= new_order.sell_amount:
                     equal_sell_amount = True
@@ -432,7 +433,7 @@ def trade():
                 #transactions = g.w3.eth.getBalance(new_order.sender_pk)
                 transactions = g.w3.eth.get_transaction(new_order.tx_id) #why is this wrong?
                 print("Ethereum transactions", transactions)
-                if transactions['input'] >= new_order.sell_amount:
+                if transactions['value'] >= new_order.sell_amount:
                     equal_sell_amount = True
             if equal_sell_amount == False:
                 result = jsonify(False)
