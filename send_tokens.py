@@ -36,25 +36,27 @@ def send_tokens_algo(acl, sender_sk, txes):
     # TODO: Return a list of transaction id's
 
 
-
+    print("ST 1")
     sender_pk = account.address_from_private_key(sender_sk)
 
     tx_ids = []
+    print("ST 2")
     for i, tx in enumerate(txes):
         params.first += i
-
+        print("ST 3")
         if 'creator_id' in tx:
             creator = next((c for c in txes if c['tx_id'] == tx['creator_id']), None)
             if creator is not None:
                 creator['amount'] -= tx['amount']
 
-
+        print("ST 4")
         # unsigned_tx = "Replace me with a transaction object"
         unsigned_tx = transaction.PaymentTxn(sender_pk, params, tx['receiver_pk'], tx['amount'])
 
         # TODO: Sign the transaction
         # signed_tx = "Replace me with a SignedTransaction object"
         signed_tx = unsigned_tx.sign(sender_sk)
+        print("ST 5")
         try:
             print(f"Sending {tx['amount']} microalgo from {sender_pk} to {tx['receiver_pk']}")
 
