@@ -106,15 +106,17 @@ def log_message(message_dict):
 
 def is_signature_valid(payload, sig, platform):
     if platform == 'Algorand':
-        print("H")
         alg_encoded_msg = json.dumps(payload).encode('utf-8')
-        print("I")
+        print("alg_encoded_msg", alg_encoded_msg)
+        print("payload['receiver_pk']", payload['receiver_pk'])
         verify = (algosdk.util.verify_bytes(alg_encoded_msg, sig, payload['receiver_pk']))
-        print("J")
         return verify
     elif platform == 'Ethereum':
         eth_encoded_msg = eth_account.messages.encode_defunct(text=json.dumps(payload))
         signer_pk = eth_account.Account.recover_message(eth_encoded_msg, signature=sig)
+        print("Ethereum signer_pk", signer_pk)
+        print("Payload signer_pk", payload['receiver_pk'])
+        print("Payload signer_pk", payload['sender_pk'])
         verify = (signer_pk.lower() == payload['receiver_pk'].lower())
         return verify
     else:
@@ -348,75 +350,6 @@ def execute_txes(txes):
         g.session.add(new_tx)
         g.session.commit()
 
-    """
-    for tx in txes:
-        print("12346")
-        if tx['sender_pk'] == algo_pk:
-            print("inside")
-            print("tx inside", tx)
-            result = send_tokens_algo(g.acl, algo_sk, tx)
-            print("AB")
-            if result == True:
-                new_tx = TX(
-                    platform='Algorand',
-                    receiver_pk=tx['receiver_pk'],
-                    order_id=tx['id'],
-                    tx_id=tx['tx_id'],
-                )
-                g.session.add(new_tx)
-                g.session.commit()
-            else:
-                print(f"Failed to execute transaction for order {tx.id}")
-        elif tx['sender_pk'] == eth_pk:
-            result = send_tokens_eth(g.w3, eth_sk, tx)
-            print("AC")
-            if result == True:
-                new_tx = TX(
-                    platform='Ethereum',
-                    receiver_pk=tx['receiver_pk'],
-                    order_id=tx['id'],
-                    tx_id=tx['tx_id']
-                )
-                g.session.add(new_tx)
-                g.session.commit()
-
-            else:
-                print(f"Failed to execute transaction for order {tx.id}")
-                """
-
-    """
-    print("EA AA")
-    for tx in algo_txes:
-        result = send_tokens_algo(algo_sk, tx.receiver_pk, tx.sell_amount)
-        print("AB")
-        if result==True:
-            new_tx = TX(
-                platform=tx.platform,
-                receiver_pk=tx.receiver_pk,
-                order_id=tx.order_id,
-                tx_id=tx.id
-            )
-
-            g.session.add(new_tx)
-            g.session.commit()
-        else:
-            print(f"Failed to execute transaction for order {tx.id}")
-    for tx in eth_txes:
-        result = send_tokens_eth(g.w3, eth_sk, tx)
-        print("AC")
-        if result==True:
-            new_tx = TX(
-                platform=tx.platform,
-                receiver_pk=tx.receiver_pk,
-                order_id=tx.order_id,
-                tx_id=tx.id
-            )
-            g.session.add(new_tx)
-            g.session.commit()
-
-        else:
-           print(f"Failed to execute transaction for order {tx.id}")
-        """
     pass
 
 
