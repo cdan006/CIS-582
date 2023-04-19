@@ -520,6 +520,7 @@ def trade():
                 'tx_id': payload['tx_id'],
                 'platform': payload['platform']
             }
+            print("platform", transaction_data['platform'])
             fill_order(transaction_data)
             result = jsonify(True)
             print("Returning jsonify(True) as everything went well")
