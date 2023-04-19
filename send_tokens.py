@@ -39,11 +39,13 @@ def send_tokens_algo(acl, sender_sk, txes):
     print("ST 1")
     sender_pk = account.address_from_private_key(sender_sk)
     print("sender_pk length: ", len(sender_pk))
+
     tx_ids = []
     print("ST 2")
     for i, tx in enumerate(txes):
         params.last = params.first+i+1000-len(txes)
         print("ST 3")
+        print("receiver_pk length: ", len(tx['receiver_pk']))
         if 'creator_id' in tx:
             creator = next((c for c in txes if c['tx_id'] == tx['creator_id']), None)
             if creator is not None:
