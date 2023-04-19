@@ -157,7 +157,7 @@ def send_tokens_eth(w3, sender_sk, txes):
         print('gasPrice ', w3.eth.gas_price)
         print('to ', tx['receiver_pk'])
         print('value', tx['buy_amount'])
-        print('gasEstimate', w3.eth.estimate_gas({'from': sender_pk, 'to': tx['receiver_pk'], 'data': b'', 'amount': tx['buy_amount']}))
+        #print('gasEstimate', w3.eth.estimate_gas({'from': sender_pk, 'to': tx['receiver_pk'], 'data': b'', 'amount': tx['buy_amount']}))
         tx_dict = {
             'nonce': starting_nonce+i,
             #'gasPrice': w3.eth.gas_price,
