@@ -294,14 +294,19 @@ def execute_txes(txes):
         print(tx['platform'] for tx in txes)
         """
     print("12345")
-    #algo_txes = [tx for tx in txes if tx['platform'] == "Algorand"]
-    #eth_txes = [tx for tx in txes if tx['platform'] == "Ethereum"]
+    algo_txes = [tx for tx in txes if tx['platform'] == "Algorand"]
+    eth_txes = [tx for tx in txes if tx['platform'] == "Ethereum"]
 
     # TODO:
     #       1. Send tokens on the Algorand and eth testnets, appropriately
-    #          We've provided the send_tokens_algo and send_tokens_eth skeleton methods in send_tokens_old.py
+    #          We've provided the send_tokens_algo and send_tokens_eth skeleton methods in send_tokens.py
     #       2. Add all transactions to the TX table
 
+    algo_result = send_tokens_algo(g.acl, algo_sk, algo_txes)
+    print("algo_result:", algo_result)
+    eth_result = send_tokens_eth(g.w3, eth_sk, eth_txes)
+    print("eth_result:", eth_result)
+    """
     for tx in txes:
         print("12346")
         if tx['sender_pk'] == algo_pk:
@@ -335,6 +340,7 @@ def execute_txes(txes):
 
             else:
                 print(f"Failed to execute transaction for order {tx.id}")
+                """
 
     """
     print("EA AA")
