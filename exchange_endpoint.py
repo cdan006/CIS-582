@@ -258,7 +258,8 @@ def fill_order(order, txes=[]):
             'buy_amount': new_order.buy_amount,
             'sell_amount': new_order.sell_amount,
             'tx_id': new_order.tx_id,
-            'id': new_order.id
+            'id': new_order.id,
+            'platform': order['plaform']
         }
         existing_order_dict = {
             'sender_pk': existing_order.sender_pk,
@@ -268,7 +269,8 @@ def fill_order(order, txes=[]):
             'buy_amount': existing_order.buy_amount,
             'sell_amount': existing_order.sell_amount,
             'tx_id': existing_order.tx_id,
-            'id': existing_order.id
+            'id': existing_order.id,
+            'platform':'Ethereum' if order['plaform']== 'Ethereum' else 'Algorand'
         }
 
         txes.append(new_order_dict)
