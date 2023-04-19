@@ -250,7 +250,7 @@ def fill_order(order, txes=[]):
         g.session.add(new_order)
         g.session.commit()
         print("7")
-        new_order_platform = order['plaform']
+        new_order_platform = order['platform']
         if new_order_platform == 'Ethereum':
             existing_order_platform = 'Algorand'
         else:
@@ -520,7 +520,6 @@ def trade():
                 'tx_id': payload['tx_id'],
                 'platform': payload['platform']
             }
-            print("platform", transaction_data['platform'])
             fill_order(transaction_data)
             result = jsonify(True)
             print("Returning jsonify(True) as everything went well")
