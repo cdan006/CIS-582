@@ -291,10 +291,11 @@ def execute_txes(txes):
     print("txes: ", txes)
     print("txes type: ", type(txes))
     print("1234")
+    """
     if not all(tx['platform'] in ["Algorand", "Ethereum"] for tx in txes):
         print("Error: execute_txes got an invalid platform!")
         print(tx['platform'] for tx in txes)
-
+"""
     print("12345")
     algo_txes = [tx for tx in txes if tx['platform'] == "Algorand"]
     eth_txes = [tx for tx in txes if tx['platform'] == "Ethereum"]
