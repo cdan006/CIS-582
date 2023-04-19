@@ -330,9 +330,9 @@ def execute_txes(txes):
             if result == True:
                 new_tx = TX(
                     platform='Ethereum',
-                    receiver_pk=tx.receiver_pk,
-                    order_id=tx.id,
-                    tx_id=tx.tx_id
+                    receiver_pk=tx['receiver_pk'],
+                    order_id=tx['id'],
+                    tx_id=tx['tx_id']
                 )
                 g.session.add(new_tx)
                 g.session.commit()
