@@ -273,8 +273,8 @@ def fill_order(order, txes=[]):
         txes.append(existing_order_dict)
         execute_txes(txes)
         print("8")
-    for tx in txes:
-        fill_order(tx)
+    #for tx in txes:
+        #fill_order(tx)
     pass
 
 
@@ -474,19 +474,13 @@ def trade():
                 tx_id = payload['tx_id']
 
             )
-            print("no buy_current", new_order.buy_currency)
-            print("no sell_current", new_order.sell_currency)
-            print("no buy amaount", new_order.buy_amount)
-            print("no sell amount", new_order.sell_amount)
             equal_sell_amount = False
-            print("platform", platform)
             if platform == "Algorand":
                 transactions = g.icl.search_transactions(txid=new_order.tx_id)
                 print(transactions)
                 transaction_amount = transactions['transactions'][0]['payment-transaction']['amount']
                 if transaction_amount >= new_order.sell_amount:
                     equal_sell_amount = True
-                    print("equal_sell_amount", equal_sell_amount)
             elif platform == "Ethereum":
                 transactions = g.w3.eth.get_transaction(new_order.tx_id) #why is this wrong?
                 if transactions['value'] >= new_order.sell_amount:
@@ -522,7 +516,6 @@ def trade():
 @app.route('/order_book')
 def order_book():
     # Same as before
-    print("order book")
     fields = ["buy_currency", "sell_currency", "buy_amount", "sell_amount", "signature", "tx_id", "receiver_pk","sender_pk"]
     all_orders = g.session.query(Order).all()
     result = {'data': []}
