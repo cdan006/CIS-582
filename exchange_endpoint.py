@@ -106,8 +106,11 @@ def log_message(message_dict):
 
 def is_signature_valid(payload, sig, platform):
     if platform == 'Algorand':
+        print("H")
         alg_encoded_msg = json.dumps(payload).encode('utf-8')
+        print("I")
         verify = (algosdk.util.verify_bytes(alg_encoded_msg, sig, payload['sender_pk']))
+        print("J")
         return verify
     elif platform == 'Ethereum':
         eth_encoded_msg = eth_account.messages.encode_defunct(text=json.dumps(payload))
