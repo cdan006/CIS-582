@@ -46,11 +46,12 @@ def send_tokens_algo(acl, sender_sk, txes):
         params.last = params.first+i+1000-len(txes)
         print("ST 3")
         print("receiver_pk length: ", len(tx['receiver_pk']))
+        """
         if 'creator_id' in tx:
             creator = next((c for c in txes if c['tx_id'] == tx['creator_id']), None)
             if creator is not None:
                 creator['buy_amount'] -= tx['buy_amount']
-
+        """
         print("ST 4")
         # unsigned_tx = "Replace me with a transaction object"
         unsigned_tx = transaction.PaymentTxn(sender_pk, params, tx['receiver_pk'], tx['buy_amount'])
@@ -146,12 +147,13 @@ def send_tokens_eth(w3, sender_sk, txes):
     tx_ids = []
     for i, tx in enumerate(txes):
         # Your code here
-
+        """
         if 'creator_id' in tx:
             # Find the parent transaction and update its amount
             creator = next((c for c in txes if c['tx_id'] == tx['creator_id']), None)
             if creator is not None:
                 creator['buy_amount'] -= tx['buy_amount']
+                """
         print("sender_pk", sender_pk)
         print("Gas")
         print('gasPrice ', w3.eth.gas_price)
