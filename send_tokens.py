@@ -46,12 +46,11 @@ def send_tokens_algo(acl, sender_sk, txes):
         params.last = params.first+i+1000-len(txes)
         print("ST 3")
         print("receiver_pk length: ", len(tx['receiver_pk']))
-        """
         if 'creator_id' in tx:
             creator = next((c for c in txes if c['tx_id'] == tx['creator_id']), None)
             if creator is not None:
                 creator['buy_amount'] -= tx['buy_amount']
-        """
+
         print("ST 4")
         # unsigned_tx = "Replace me with a transaction object"
         unsigned_tx = transaction.PaymentTxn(sender_pk, params, tx['receiver_pk'], tx['buy_amount'])
@@ -153,18 +152,17 @@ def send_tokens_eth(w3, sender_sk, txes):
             creator = next((c for c in txes if c['tx_id'] == tx['creator_id']), None)
             if creator is not None:
                 creator['buy_amount'] -= tx['buy_amount']
-                """
+        """
         print("sender_pk", sender_pk)
         print("Gas")
         print('gasPrice ', w3.eth.gas_price)
         print('to ', tx['receiver_pk'])
         print('value', tx['buy_amount'])
-        #print('gasEstimate', w3.eth.estimate_gas({'from': sender_pk, 'to': tx['receiver_pk'], 'data': b'', 'amount': tx['buy_amount']}))
+        print('gasEstimate', w3.eth.estimate_gas({'from': sender_pk, 'to': tx['receiver_pk'], 'data': b'', 'amount': tx['buy_amount']}))
         tx_dict = {
             'nonce': starting_nonce+i,
-            #'gasPrice': w3.eth.gas_price,
-            'gasPrice': 1,
-            'gas': 1,
+            'gasPrice': w3.eth.gas_price,
+            'gas': w3.eth.estimate_gas({'from': sender_pk, 'to': tx['receiver_pk'], 'data': b'', 'amount': tx['buy_amount']}),
             'to': tx['receiver_pk'],
             'value': tx['buy_amount'],
             'data': b''}
